@@ -393,7 +393,7 @@
             const beatList = cart.map(b => b.title).join(', ');
             // Lien court send-beats
             const d = btoa(JSON.stringify({n:name, e:email, b:cart.map(x=>x.title).join(','), t:total, l:lang}));
-            const magicLink = `https://callmekaiju25-afk.github.io/kaiju-beats/send-beats.html?d=${encodeURIComponent(d)}`;
+            const magicLink = `https://callmekaiju25-afk.github.io/Kaiju/send-beats.html?d=${encodeURIComponent(d)}`;
             const waMsg = encodeURIComponent(
                 `💰 COMMANDE KAIJU BEATS\n` +
                 `👤 ${name}\n` +

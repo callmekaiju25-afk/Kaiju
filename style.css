@@ -658,3 +658,137 @@ main.container { padding-top:44px; position:relative; z-index:10; }
 }
 .hero-stats::before { left: 30%; }
 .hero-stats::after { right: 30%; }
+/* ==================== UPGRADES VISUELS ==================== */
+
+/* Motif hexagonal en fond */
+.grid-overlay {
+  background-image:
+    linear-gradient(rgba(94,189,133,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94,189,133,.025) 1px, transparent 1px),
+    radial-gradient(circle, rgba(94,189,133,.015) 1px, transparent 1px) !important;
+  background-size: 80px 80px, 80px 80px, 40px 40px !important;
+}
+
+/* Cercles déco animés supplémentaires */
+.deco-circle-1::before {
+  content: '';
+  position: absolute; inset: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(94,189,133,.04);
+}
+
+.deco-circle-1::after {
+  content: '';
+  position: absolute; inset: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(94,189,133,.03);
+}
+
+/* Losanges avec glow */
+.deco-diamond::before {
+  content: '';
+  position: absolute; inset: -6px;
+  border: 1px solid rgba(94,189,133,.08);
+  transform: none;
+}
+
+/* Croix décorative */
+.deco-cross {
+  position: fixed; bottom: 35%; right: 10%;
+  width: 20px; height: 20px;
+  pointer-events: none; z-index: 0;
+  animation: float-deco 7s ease-in-out infinite 1s;
+}
+.deco-cross::before, .deco-cross::after {
+  content: '';
+  position: absolute;
+  background: rgba(94,189,133,.2);
+}
+.deco-cross::before { width: 100%; height: 1px; top: 50%; }
+.deco-cross::after { width: 1px; height: 100%; left: 50%; }
+
+/* Beat cards hover plus riche */
+.beat-card:hover {
+  transform: translateY(-10px) scale(1.01) !important;
+}
+
+/* Catalogue header avec ligne animée */
+.catalog-header h1::after {
+  animation: line-expand 1s ease forwards !important;
+}
+@keyframes line-expand {
+  from { width: 0; opacity: 0; }
+  to { width: 50%; opacity: 1; }
+}
+
+/* Promo bar icones pulsantes */
+.promo-bar i {
+  animation: icon-pulse 2s ease-in-out infinite !important;
+}
+@keyframes icon-pulse {
+  0%, 100% { opacity: .5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+/* Player avec effet glow dynamique */
+.player-fixed::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--jade), transparent);
+  animation: player-line 3s ease-in-out infinite;
+}
+@keyframes player-line {
+  0%, 100% { opacity: .3; }
+  50% { opacity: .8; }
+}
+
+/* Testimonials avec ligne gauche sur featured */
+.testi-featured::before {
+  content: '';
+  position: absolute; left: 0; top: 15%; bottom: 15%;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--jade), transparent);
+}
+
+/* Boutons nav avec glow au hover */
+.nav-link-btn:hover {
+  box-shadow: 0 0 20px rgba(94,189,133,.2) !important;
+}
+
+/* Scrollbar personnalisée plus visible */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--jade-dark), var(--jade));
+  border-radius: 3px;
+}
+
+/* Logo glow renforcé */
+.logo-img {
+  filter: drop-shadow(0 0 14px rgba(94,189,133,.6)) !important;
+}
+
+/* Cards avec animation d'entrée au scroll */
+.beat-card { transition: all .4s cubic-bezier(.4,0,.2,1), opacity .5s ease !important; }
+
+/* Fond avec vignette */
+body::after {
+  content: '' !important;
+  position: fixed !important;
+  inset: 0 !important;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.4) 100%) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+  width: 1px !important;
+  height: 100vh !important;
+  left: 32px !important;
+  background: linear-gradient(180deg, transparent, rgba(94,189,133,.2) 20%, rgba(94,189,133,.2) 80%, transparent) !important;
+}
+
+/* Vignette séparée */
+.vignette {
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.5) 100%);
+  pointer-events: none; z-index: 0;
+}
