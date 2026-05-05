@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAIJU BEATS | Beat Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css?v=28.0">
+</head>
+<body>
+
+    <!-- CURSEUR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- DÉCO FOND -->
+    <div class="bg-glow"></div>
+    <div class="grid-overlay"></div>
+    <div class="eclipse-orb"></div>
+    <div class="scan-line"></div>
+    <div class="corner-deco tr"></div>
+    <div class="corner-deco bl"></div>
+    <div class="deco-circle-1"></div>
+    <div class="deco-circle-2"></div>
+    <div class="deco-diamond"></div>
+    <div class="deco-diamond-2"></div>
+    <div class="deco-cross"></div>
+    <div class="particles">
+        <div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- LANG MODAL -->
+    <div class="lang-modal" id="langModal">
+        <div class="lang-backdrop"></div>
+        <div class="lang-card">
+            <div class="lang-logo">
+                <div class="logo-wrapper">
+                    <img src="Logo.PNG" alt="KAIJU BEATS" class="lang-logo-img">
+                </div>
+            </div>
+            <div class="lang-title">
+                <span class="lang-line">KAIJU BEATS</span>
+                <div class="lang-divider"><span></span></div>
+                <span class="lang-line" style="font-size:0.6rem; opacity:0.5;">CHOISIR LA LANGUE / SELECT LANGUAGE</span>
+            </div>
+            <div class="lang-options">
+                <button class="lang-btn" onclick="setLang('fr')">
+                    <div class="flag flag-fr">
+                        <div class="flag-stripe blue"></div>
+                        <div class="flag-stripe white"></div>
+                        <div class="flag-stripe red"></div>
+                    </div>
+                    <span class="lang-name">FRANÇAIS</span>
+                </button>
+                <button class="lang-btn" onclick="setLang('en')">
+                    <div class="flag flag-us">
+                        <div class="flag-us-inner">
+                            <div class="us-stripes">
+                                <span></span><span></span><span></span><span></span>
+                                <span></span><span></span><span></span>
+                            </div>
+                            <div class="us-canton"><div class="us-stars">★★★★★★★★★</div></div>
+                        </div>
+                    </div>
+                    <span class="lang-name">ENGLISH</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo" style="text-decoration:none">
+                <div class="logo-wrapper">
+                    <img src="Logo.PNG" alt="KAIJU BEATS" class="logo-img">
+                </div>
+            </a>
+            <div class="nav-right">
+                <button class="nav-link-btn readme-btn" id="readmeBtn">
+                    <div class="btn-bg"></div>
+                    <span id="readmeBtnLabel">LIS MOI</span>
+                </button>
+                <button class="nav-link-btn" id="socialsBtn">
+                    <div class="btn-bg"></div>
+                    <span>SOCIALS</span>
+                </button>
+                <button class="nav-link-btn" id="contactBtn">
+                    <div class="btn-bg"></div>
+                    <span>CONTACT</span>
+                </button>
+                <button class="cart-trigger" id="cartBtn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PROMO BAR -->
+    <div class="promo-container">
+        <div class="promo-bar">
+            <i class="fas fa-circle-notch fa-spin" style="font-size:0.5rem"></i>
+            <span id="promoText">2 BEATS ACHETÉS = LE 3ÈME OFFERT (AUTO-APPLIQUÉ)</span>
+            <i class="fas fa-circle-notch fa-spin" style="font-size:0.5rem"></i>
+        </div>
+    </div>
+
+    <!-- STAT 2+1 -->
+    <div class="hero-stats">
+        <div class="stat-item">
+            <span class="stat-number">2+1</span>
+            <span class="stat-label">OFFRE SPÉCIALE</span>
+        </div>
+    </div>
+
+    <!-- MAIN CATALOG -->
+    <main class="container">
+        <div class="catalog-header">
+            <h1 class="glitch">STUDIO CATALOG</h1>
+        </div>
+
+        <div class="filter-bar">
+            <div class="custom-select" id="customSelect">
+                <button class="custom-select-btn" id="customSelectBtn">
+                    <span id="customSelectLabel">TOUS LES STYLES</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="custom-select-list" id="customSelectList">
+                    <li class="custom-select-item active" data-value="all">TOUS LES STYLES</li>
+                    <li class="custom-select-item" data-value="trap">TRAP</li>
+                    <li class="custom-select-item" data-value="afro">AFRO</li>
+                    <li class="custom-select-item" data-value="Drill">DRILL</li>
+                    <li class="custom-select-item" data-value="hood-trap">HOOD TRAP</li>
+                    <li class="custom-select-item" data-value="Acoustic">ACOUSTIC</li>
+                    <li class="custom-select-item" data-value="Amapiano">AMAPIANO</li>
+                    <li class="custom-select-item" data-value="Boom bap">BOOM BAP</li>
+                    <li class="custom-select-item" data-value="Oriental">ORIENTAL</li>
+                </ul>
+            </div>
+            <select id="genreFilter" style="display:none">
+                <option value="all">TOUS LES STYLES</option>
+            </select>
+
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Rechercher un beat...">
+            </div>
+
+            <button class="shuffle-btn" id="shuffleBtn">
+                <i class="fas fa-random"></i>
+                <span id="shuffleBtnLabel">SHUFFLE</span>
+            </button>
+        </div>
+
+        <div class="beats-grid" id="beatsGrid"></div>
+    </main>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials-section container">
+        <div class="testimonials-header">
+            <h2 class="glitch-sm">REVIEWS</h2>
+            <p id="testimonialsSubtitle">Ce que disent les artistes</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testi-card testi-featured">
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">"Des prods de qualité studio, l'ambiance est là dès les premières secondes. CARNAGE m'a fait écrire un freestyle en 10 minutes."</p>
+                <div class="testi-author">
+                    <div class="testi-avatar">L</div>
+                    <div>
+                        <span class="testi-name">LENZO</span>
+                        <small>Rappeur — Paris</small>
+                    </div>
+                </div>
+            </div>
+            <div class="testi-card">
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">"ZURA c'est exactement le son que je cherchais pour mon projet Afro. Kaiju sait capter l'émotion comme personne."</p>
+                <div class="testi-author">
+                    <div class="testi-avatar">S</div>
+                    <div>
+                        <span class="testi-name">SAMBA K.</span>
+                        <small>Artiste Afro — Dakar</small>
+                    </div>
+                </div>
+            </div>
+            <div class="testi-card">
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">"Le processus d'achat est simple et rapide. J'ai reçu mes fichiers en moins d'une heure. Je reviendrai !"</p>
+                <div class="testi-author">
+                    <div class="testi-avatar">M</div>
+                    <div>
+                        <span class="testi-name">MAYA</span>
+                        <small>Chanteuse — Lyon</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PLAYER -->
+    <div class="player-fixed" id="audioPlayer">
+        <div class="player-progress-bar">
+            <div class="player-progress-fill" id="progressFill"></div>
+        </div>
+        <div class="container player-grid">
+            <div class="p-info">
+                <div class="p-cover-wrapper">
+                    <img src="" id="pCover" alt="">
+                </div>
+                <div class="p-meta">
+                    <h4 id="pTitle">—</h4>
+                    <small><i class="fas fa-record-vinyl"></i> PROD BY KAIJU</small>
+                </div>
+            </div>
+            <div class="p-controls">
+                <div class="p-buttons">
+                    <button class="skip-btn" onclick="changeTime(-10)"><i class="fas fa-backward"></i></button>
+                    <button class="play-main-btn" id="pPlayPause"><i class="fas fa-play"></i></button>
+                    <button class="skip-btn" onclick="changeTime(10)"><i class="fas fa-forward"></i></button>
+                </div>
+                <div class="p-seeker">
+                    <span id="timeCurrent">0:00</span>
+                    <div class="progress-container">
+                        <input type="range" id="pProgress" value="0" min="0" max="100" step="0.1">
+                    </div>
+                    <span id="timeTotal">0:00</span>
+                </div>
+            </div>
+            <div class="p-vol">
+                <button class="vol-icon" id="volBtn"><i class="fas fa-volume-up"></i></button>
+                <div class="vol-slider-wrapper">
+                    <input type="range" id="volControl" min="0" max="1" step="0.01" value="1">
+                </div>
+            </div>
+        </div>
+        <audio id="mainAudio"></audio>
+    </div>
+
+    <!-- MODALS -->
+    <!-- Cart -->
+    <div class="modal" id="cartModal">
+        <div class="modal-overlay" onclick="document.getElementById('cartModal').classList.remove('active')"></div>
+        <div class="modal-card cart-modal">
+            <button class="close-btn" id="closeCart"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <span class="modal-icon"><i class="fas fa-shopping-bag"></i></span>
+                <h2 id="cartTitle">VOTRE PANIER</h2>
+                <p id="cartSub">Beats sélectionnés</p>
+            </div>
+            <div class="cart-scroll" id="cartItems"></div>
+            <div id="cartTotalArea"></div>
+        </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="modal" id="contactModal">
+        <div class="modal-overlay" onclick="document.getElementById('contactModal').classList.remove('active')"></div>
+        <div class="modal-card">
+            <button class="close-btn" id="closeContact"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <span class="modal-icon"><i class="fas fa-envelope"></i></span>
+                <h2>CONTACT</h2>
+                <p id="contactSub">Contactez-moi pour vos projets</p>
+            </div>
+            <div class="contact-list">
+                <a href="https://wa.me/221777694864" target="_blank" class="c-item">
+                    <div class="c-icon"><i class="fab fa-whatsapp"></i></div>
+                    <div class="c-txt"><span>WHATSAPP</span><small>+221 77 769 48 64</small></div>
+                    <i class="fas fa-arrow-right c-arrow"></i>
+                </a>
+                <a href="mailto:callmekaiju@gmail.com" class="c-item">
+                    <div class="c-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="c-txt"><span>EMAIL</span><small>callmekaiju@gmail.com</small></div>
+                    <i class="fas fa-arrow-right c-arrow"></i>
+                </a>
+                <a href="https://instagram.com/its._kaiju" target="_blank" class="c-item">
+                    <div class="c-icon c-icon-ig"><i class="fab fa-instagram"></i></div>
+                    <div class="c-txt"><span>INSTAGRAM</span><small>@its._kaiju</small></div>
+                    <i class="fas fa-arrow-right c-arrow"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Socials -->
+    <div class="modal" id="socialsModal">
+        <div class="modal-overlay" onclick="document.getElementById('socialsModal').classList.remove('active')"></div>
+        <div class="modal-card">
+            <button class="close-btn" id="closeSocials"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <span class="modal-icon"><i class="fas fa-share-alt"></i></span>
+                <h2>SOCIALS</h2>
+                <p id="socialsSub">Retrouve-moi sur les réseaux</p>
+            </div>
+            <div class="contact-list">
+                <a href="https://www.youtube.com/@Call_Me_KaijuBeats" target="_blank" class="c-item social-yt">
+                    <div class="c-icon c-icon-yt"><i class="fab fa-youtube"></i></div>
+                    <div class="c-txt"><span>YOUTUBE</span><small>@Call_Me_KaijuBeats</small></div>
+                    <i class="fas fa-arrow-right c-arrow"></i>
+                </a>
+                <a href="https://instagram.com/its._kaiju" target="_blank" class="c-item social-ig">
+                    <div class="c-icon c-icon-ig"><i class="fab fa-instagram"></i></div>
+                    <div class="c-txt"><span>INSTAGRAM</span><small>@its._kaiju</small></div>
+                    <i class="fas fa-arrow-right c-arrow"></i>
+                </a>
+                <a href="https://www.tiktok.com/@its._kaiju6" target="_blank" class="c-item social-tt">
+                    <div class="c-icon c-icon-tt"><i class="fab fa-tiktok"></i></div>
+                    <div class="c-txt"><span>TIKTOK</span><small>@its._kaiju6</small></div>
+                    <i class="fas fa-arrow-right c-arrow"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Readme -->
+    <div class="modal" id="readmeModal">
+        <div class="modal-overlay" onclick="document.getElementById('readmeModal').classList.remove('active')"></div>
+        <div class="modal-card readme-modal-card">
+            <button class="close-btn" id="closeReadme"><i class="fas fa-times"></i></button>
+            <div class="readme-content" id="readmeContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
