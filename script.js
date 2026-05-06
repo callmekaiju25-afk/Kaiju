@@ -226,7 +226,7 @@ window.changeTime = (amount) => {
 
 // Helper pour mettre à jour le gradient d'une barre
 function updateSliderGradient(el, pct) {
-    el.style.background = `linear-gradient(to right, #00ff88 0%, #00ff88 ${pct}%, #1a1a1a ${pct}%, #1a1a1a 100%)`;
+    el.style.background = `linear-gradient(to right, #DC143C 0%, #DC143C ${pct}%, #141414 ${pct}%, #141414 100%)`;
 }
 
 // Rendre la barre maniable
