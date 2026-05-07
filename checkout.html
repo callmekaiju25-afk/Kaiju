@@ -6,122 +6,94 @@
     <title>KAIJU BEATS | Checkout</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=31.0">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <link rel="stylesheet" href="style.css?v=32.0">
     <style>
-        .checkout-page { min-height: 100vh; padding: 120px 20px 100px; }
-        .checkout-wrapper { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .checkout-card { background: var(--card); border: 1px solid var(--border-light); border-radius: 20px; padding: 30px; }
-        .checkout-card h2 { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 900; letter-spacing: 3px; color: var(--primary); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 2px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase; }
-        .form-group input { width: 100%; background: rgba(0,255,136,0.03); border: 1px solid var(--border-light); border-radius: 10px; padding: 14px 18px; color: var(--text-primary); font-family: 'Space Mono', monospace; font-size: 0.85rem; outline: none; transition: all 0.3s ease; box-sizing: border-box; }
-        .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(0,255,136,0.15); }
-        .form-group input::placeholder { color: #444; }
-        .checkout-right { display: flex; flex-direction: column; gap: 24px; }
-        .recap-item { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
-        .recap-item:last-child { border-bottom: none; }
-        .recap-cover { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
-        .recap-info { flex: 1; }
-        .recap-info h4 { font-family: 'Orbitron', sans-serif; font-size: 0.75rem; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
-        .recap-info small { font-size: 0.65rem; color: var(--text-secondary); letter-spacing: 1px; }
-        .recap-price { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--primary); white-space: nowrap; }
-        .recap-free { color: #00ff88; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; }
-        .total-section { border-top: 1px solid rgba(0,255,136,0.2); padding-top: 18px; margin-top: 8px; }
-        .total-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .total-line span { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--text-secondary); }
-        .total-line.main { margin-top: 12px; }
-        .total-line.main span:first-child { font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 900; color: var(--text-primary); letter-spacing: 2px; }
-        .total-line.main span:last-child { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; font-weight: 900; color: var(--primary); text-shadow: 0 0 20px rgba(0,255,136,0.4); }
-        .promo-line { background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2); border-radius: 8px; padding: 10px 14px; font-size: 0.7rem; color: var(--primary); text-align: center; letter-spacing: 1px; margin-bottom: 10px; }
-        #paypal-button-container { margin-top: 10px; }
-        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); font-family: 'Space Mono', monospace; font-size: 0.75rem; letter-spacing: 2px; text-decoration: none; margin-bottom: 30px; transition: color 0.3s; }
-        .back-btn:hover { color: var(--primary); }
-        .empty-cart { text-align: center; padding: 60px 20px; }
-        .empty-cart i { font-size: 3rem; color: #333; margin-bottom: 20px; }
-        .empty-cart h2 { font-family: 'Orbitron', sans-serif; font-size: 1rem; color: var(--text-secondary); letter-spacing: 3px; }
-        .success-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; }
-        .success-overlay.show { display: flex; }
-        .success-card { background: #0d0d0d; border: 1px solid rgba(0,255,136,0.3); border-radius: 24px; padding: 50px 40px; text-align: center; max-width: 480px; animation: fadeInUp 0.4s ease; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .success-icon { font-size: 4rem; margin-bottom: 20px; }
-        .success-card h2 { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 900; letter-spacing: 3px; color: var(--primary); margin-bottom: 12px; }
-        .success-card p { font-family: 'Space Mono', monospace; font-size: 0.8rem; color: #aaa; line-height: 1.8; }
-        .success-card .go-back { display: inline-block; margin-top: 24px; padding: 14px 30px; background: var(--primary); color: black; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.8rem; letter-spacing: 2px; border-radius: 10px; text-decoration: none; transition: all 0.3s; }
-        .success-card .go-back:hover { box-shadow: 0 0 25px rgba(0,255,136,0.5); transform: translateY(-2px); }
-        .paypalme-btn { width: 100%; padding: 16px; background: #0070ba; border: none; border-radius: 12px; color: white; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.8rem; letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .paypalme-btn:hover { background: #005ea6; box-shadow: 0 0 25px rgba(0,112,186,0.5); transform: translateY(-2px); }
-        .action-btn { width: 100%; padding: 16px; background: var(--primary); border: none; border-radius: 12px; color: black; font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 0.8rem; letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 12px; }
-        .action-btn:hover { box-shadow: 0 0 25px rgba(0,255,136,0.5); transform: translateY(-2px); }
-        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .step-box { background: rgba(0,255,136,0.04); border: 1px solid rgba(0,255,136,0.15); border-radius: 14px; padding: 20px; margin-top: 16px; }
-        .step-title { font-family: 'Orbitron', sans-serif; font-size: 0.72rem; color: var(--primary); letter-spacing: 2px; margin-bottom: 10px; }
-        .step-desc { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: #888; line-height: 1.7; margin-bottom: 14px; }
-        .step-input { width: 100%; background: rgba(0,255,136,0.03); border: 1px solid rgba(0,255,136,0.3); border-radius: 10px; padding: 13px 16px; color: #fff; font-family: 'Space Mono', monospace; font-size: 0.8rem; outline: none; box-sizing: border-box; margin-bottom: 12px; transition: all 0.3s; letter-spacing: 2px; }
-        .step-input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0,255,136,0.15); }
-        .error-msg { font-size: 0.65rem; color: #ff4444; font-family: 'Space Mono', monospace; text-align: center; margin-top: 8px; display: none; }
-        .warning-box { background: rgba(255,200,0,0.05); border: 1px solid rgba(255,200,0,0.2); border-radius: 10px; padding: 14px 16px; margin-top: 12px; }
-        .warning-box p { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: #ffcc00; line-height: 1.7; }
-        .steps-indicator { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
-        .step-dot { width: 8px; height: 8px; border-radius: 50%; background: #333; transition: all 0.3s; }
-        .step-dot.active { background: var(--primary); box-shadow: 0 0 10px rgba(0,255,136,0.5); }
-        .step-dot.done { background: var(--primary); opacity: 0.5; }
-        @media (max-width: 768px) { .checkout-wrapper { grid-template-columns: 1fr; } .checkout-right { order: -1; } }
+        .checkout-page{min-height:100vh;padding:120px 20px 100px}
+        .checkout-wrapper{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:30px}
+        .checkout-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:30px}
+        .checkout-card h2{font-family:'Orbitron',sans-serif;font-size:0.85rem;font-weight:900;letter-spacing:3px;color:var(--pink-hi);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+        .form-group{margin-bottom:18px}
+        .form-group label{display:block;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--text-soft);margin-bottom:8px;text-transform:uppercase}
+        .form-group input{width:100%;background:rgba(107,33,168,0.05);border:1px solid var(--border);border-radius:10px;padding:14px 18px;color:var(--text);font-family:'Space Mono',monospace;font-size:0.85rem;outline:none;transition:all 0.3s;box-sizing:border-box}
+        .form-group input:focus{border-color:var(--border-hi);box-shadow:0 0 20px rgba(236,72,153,0.12)}
+        .form-group input::placeholder{color:#444}
+        .recap-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+        .recap-item:last-child{border-bottom:none}
+        .recap-cover{width:48px;height:48px;border-radius:8px;object-fit:cover;flex-shrink:0}
+        .recap-info{flex:1}
+        .recap-info h4{font-family:'Orbitron',sans-serif;font-size:0.75rem;font-weight:700;color:var(--text);margin-bottom:3px}
+        .recap-info small{font-size:0.65rem;color:var(--text-soft);letter-spacing:1px}
+        .recap-price{font-family:'Orbitron',sans-serif;font-size:0.85rem;font-weight:700;color:var(--pink-hi);white-space:nowrap}
+        .recap-free{color:var(--pink-hi);font-size:0.7rem;font-weight:700;letter-spacing:1px}
+        .total-section{border-top:1px solid var(--border-hi);padding-top:18px;margin-top:8px}
+        .total-line{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+        .total-line span{font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--text-soft)}
+        .total-line.main span:first-child{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;color:var(--text);letter-spacing:2px}
+        .total-line.main span:last-child{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:900;color:var(--pink-hi)}
+        .promo-line{background:rgba(107,33,168,0.1);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:0.7rem;color:var(--pink-hi);text-align:center;letter-spacing:1px;margin-bottom:10px;font-family:'Space Mono',monospace}
+        .back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text-soft);font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:2px;text-decoration:none;margin-bottom:30px;transition:color 0.3s}
+        .back-btn:hover{color:var(--pink-hi)}
+        .empty-cart{text-align:center;padding:60px 20px}
+        .empty-cart i{font-size:3rem;color:#333;margin-bottom:20px;display:block}
+        .empty-cart h2{font-family:'Orbitron',sans-serif;font-size:1rem;color:var(--text-soft);letter-spacing:3px}
+        .success-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center}
+        .success-overlay.show{display:flex}
+        .success-card{background:#0a0a0a;border:1px solid var(--border-hi);border-radius:24px;padding:50px 40px;text-align:center;max-width:480px;animation:fadeInUp 0.4s ease}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .success-icon{font-size:4rem;margin-bottom:20px}
+        .success-card h2{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:900;letter-spacing:3px;color:var(--pink-hi);margin-bottom:12px}
+        .success-card p{font-family:'Space Mono',monospace;font-size:0.8rem;color:#aaa;line-height:1.8}
+        .success-card .go-back{display:inline-block;margin-top:24px;padding:14px 30px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:2px;border-radius:10px;text-decoration:none;transition:all 0.3s}
+        .success-card .go-back:hover{box-shadow:0 0 25px rgba(236,72,153,0.5);transform:translateY(-2px)}
+        .paypalme-btn{width:100%;padding:16px;background:#0070ba;border:none;border-radius:12px;color:white;font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:2px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:10px}
+        .paypalme-btn:hover{background:#005ea6;box-shadow:0 0 25px rgba(0,112,186,0.4);transform:translateY(-2px)}
+        .action-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--purple),var(--pink));border:none;border-radius:12px;color:#fff;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.8rem;letter-spacing:2px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px}
+        .action-btn:hover{box-shadow:0 0 28px rgba(236,72,153,0.5);transform:translateY(-2px)}
+        .action-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+        .step-box{background:rgba(107,33,168,0.06);border:1px solid var(--border);border-radius:14px;padding:20px;margin-top:16px}
+        .step-title{font-family:'Orbitron',sans-serif;font-size:0.72rem;color:var(--pink-hi);letter-spacing:2px;margin-bottom:10px}
+        .step-desc{font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--text-soft);line-height:1.7;margin-bottom:14px}
+        .step-input{width:100%;background:rgba(107,33,168,0.05);border:1px solid var(--border-hi);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'Space Mono',monospace;font-size:0.8rem;outline:none;box-sizing:border-box;margin-bottom:4px;transition:all 0.3s;letter-spacing:2px}
+        .step-input:focus{border-color:rgba(236,72,153,0.5);box-shadow:0 0 15px rgba(236,72,153,0.1)}
+        .error-msg{font-size:0.65rem;color:#ff4444;font-family:'Space Mono',monospace;text-align:center;margin-top:8px;display:none}
+        .confirm-box{background:rgba(107,33,168,0.08);border:1px solid rgba(236,72,153,0.25);border-radius:12px;padding:16px 18px;margin-top:16px}
+        .confirm-box p{font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--pink-hi);line-height:1.7}
+        .steps-indicator{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+        .step-dot{width:8px;height:8px;border-radius:50%;background:#333;transition:all 0.3s;flex-shrink:0}
+        .step-dot.active{background:var(--pink);box-shadow:0 0 10px rgba(236,72,153,0.6)}
+        .step-dot.done{background:var(--purple-hi);opacity:0.6}
+        @media(max-width:768px){.checkout-wrapper{grid-template-columns:1fr}.checkout-right{order:-1}}
     </style>
 </head>
 <body>
     <div class="cursor-dot" id="cursorDot"></div>
     <div class="cursor-ring" id="cursorRing"></div>
     <div class="bg-glow"></div>
-    <!-- SVG DÉCO — bandes diagonales + formes organiques -->
-    <svg class="deco-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <!-- BANDE 1 — grande diagonale principale, vert sombre -->
-      <path d="M -100 -60 L 1540 320 L 1540 520 L -100 140 Z" fill="#0f2e1a" opacity="0.7"/>
-      <!-- BANDE 2 — diagonale jade -->
-      <path d="M -100 560 L 1540 140 L 1540 210 L -100 630 Z" fill="#1e5c38" opacity="0.45"/>
-      <!-- BANDE 3 — diagonale fine vert vif -->
-      <path d="M -100 280 L 1540 680 L 1540 710 L -100 308 Z" fill="#3d9962" opacity="0.2"/>
-      <!-- BANDE 4 — trait bas vert jade -->
-      <path d="M -100 820 L 1540 620 L 1540 640 L -100 840 Z" fill="#1e5c38" opacity="0.3"/>
-      <!-- BRUSHSTROKE haut gauche principal -->
-      <path d="M -80 -20 C 40 20 120 80 200 60 C 260 45 290 -10 360 -5 C 420 0 450 45 500 35 C 540 27 555 -5 590 -15 L 590 40 C 555 55 540 88 500 98 C 450 110 420 68 360 75 C 290 83 260 140 200 155 C 120 174 40 120 -80 75 Z" fill="#1e5c38" opacity="0.35"/>
-      <path d="M -80 10 C 50 48 130 105 205 85 C 268 68 295 18 364 22 C 422 26 452 68 502 60 L 502 80 C 452 90 422 52 364 48 C 295 43 268 95 205 113 C 130 135 50 85 -80 44 Z" fill="#0f2e1a" opacity="0.5"/>
-      <!-- TENTACULE bas gauche -->
-      <path d="M -60 900 C 20 840 80 820 150 850 C 200 870 220 910 265 925 C 295 935 320 928 340 940 C 355 950 352 965 335 970 L 295 968 C 308 960 310 948 295 940 C 272 928 248 936 215 916 C 180 894 158 856 105 836 C 55 818 -5 838 -60 900 Z" fill="#1e5c38" opacity="0.55"/>
-      <path d="M 340 940 C 375 928 420 924 455 936 C 480 944 490 958 478 966 L 448 964 C 457 957 452 946 430 938 C 405 928 372 932 348 942 Z" fill="#1e5c38" opacity="0.4"/>
-      <!-- BRUSHSTROKE bas droite -->
-      <path d="M 1540 900 C 1460 860 1380 840 1320 808 C 1270 780 1255 748 1220 730 C 1188 714 1158 718 1135 700 C 1114 684 1110 660 1128 648 L 1142 658 C 1126 668 1130 688 1150 704 C 1172 720 1202 716 1236 734 C 1272 752 1288 786 1340 814 C 1400 846 1480 864 1540 900 Z" fill="#0f2e1a" opacity="0.6"/>
-      <path d="M 1540 870 C 1455 835 1370 818 1308 786 C 1256 758 1242 726 1208 708 L 1222 698 C 1257 716 1272 748 1324 776 C 1386 808 1470 824 1540 858 Z" fill="#3d9962" opacity="0.15"/>
-      <!-- TENTACULE sinueux droite -->
-      <path d="M 1540 350 C 1490 320 1440 330 1400 360 C 1368 384 1360 418 1330 438 C 1304 456 1275 452 1255 470 C 1237 486 1234 508 1218 520 C 1202 532 1182 530 1170 518 L 1180 506 C 1190 515 1205 516 1218 506 C 1232 495 1235 472 1254 456 C 1274 438 1304 442 1332 424 C 1362 404 1370 368 1404 344 C 1444 316 1494 306 1540 330 Z" fill="#1e5c38" opacity="0.4"/>
-      <!-- BLOB organique central haut -->
-      <path d="M 820 -30 C 870 10 900 55 885 95 C 872 128 845 140 840 172 C 836 198 848 220 840 242 C 833 262 816 270 808 248 L 818 244 C 822 258 832 252 838 234 C 845 212 832 190 836 162 C 840 128 868 115 880 80 C 894 40 862 -2 812 -40 Z" fill="#1e5c38" opacity="0.3"/>
-      <!-- Nervures fines -->
-      <path d="M -100 380 C 200 340 500 370 800 340 C 1050 315 1280 355 1540 330" fill="none" stroke="#3d9962" stroke-width="1" opacity="0.2"/>
-      <path d="M -100 420 C 300 395 600 415 900 390 C 1150 368 1350 395 1540 375" fill="none" stroke="#1e5c38" stroke-width="0.8" opacity="0.18"/>
-      <path d="M -100 700 C 250 670 580 690 900 665 C 1150 644 1350 670 1540 650" fill="none" stroke="#3d9962" stroke-width="0.7" opacity="0.15"/>
-      <!-- Éléments géométriques -->
-      <polygon points="1340,80 1358,100 1340,120 1322,100" fill="none" stroke="#3d9962" stroke-width="1.2" opacity="0.4"/>
-      <polygon points="1340,88 1352,100 1340,112 1328,100" fill="#3d9962" opacity="0.08"/>
-      <polygon points="160,740 174,756 160,772 146,756" fill="none" stroke="#1e5c38" stroke-width="1" opacity="0.4"/>
-      <rect x="695" y="440" width="14" height="14" fill="none" stroke="#1e5c38" stroke-width="0.8" opacity="0.35" transform="rotate(45 702 447)"/>
-      <line x1="1200" y1="500" x2="1228" y2="500" stroke="#0f2e1a" stroke-width="0.8" opacity="0.5"/>
-      <line x1="1214" y1="486" x2="1214" y2="514" stroke="#0f2e1a" stroke-width="0.8" opacity="0.5"/>
-      <path d="M 0 160 Q 140 40 280 130" fill="none" stroke="#1e5c38" stroke-width="1" opacity="0.25"/>
-      <path d="M 0 190 Q 155 60 295 155" fill="none" stroke="#0f2e1a" stroke-width="0.6" opacity="0.18"/>
-      <circle cx="80" cy="520" r="40" fill="none" stroke="#1e5c38" stroke-width="0.8" opacity="0.28"/>
-      <circle cx="80" cy="520" r="22" fill="none" stroke="#3d9962" stroke-width="0.5" opacity="0.15"/>
-      <circle cx="1380" cy="200" r="55" fill="none" stroke="#1e5c38" stroke-width="0.8" opacity="0.22"/>
-      <circle cx="1380" cy="200" r="35" fill="none" stroke="#0f2e1a" stroke-width="0.5" opacity="0.15"/>
-      <circle cx="480" cy="220" r="2" fill="#3d9962" opacity="0.45"/>
-      <circle cx="920" cy="460" r="1.5" fill="#3d9962" opacity="0.4"/>
-      <circle cx="240" cy="620" r="2" fill="#1e5c38" opacity="0.5"/>
-      <circle cx="1100" cy="300" r="1.5" fill="#3d9962" opacity="0.35"/>
-      <circle cx="700" cy="780" r="2" fill="#1e5c38" opacity="0.45"/>
-      <circle cx="1280" cy="640" r="1.5" fill="#3d9962" opacity="0.3"/>
-      <circle cx="360" cy="88" r="1.5" fill="#3d9962" opacity="0.4"/>
-    </svg>
+    <div class="scan-line"></div>
+    <div class="particles">
+        <div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div>
+    </div>
 
+    <svg class="deco-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6B21A8" stop-opacity="0.5"/><stop offset="100%" stop-color="#4C0080" stop-opacity="0.2"/></linearGradient>
+        <linearGradient id="g2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#EC4899" stop-opacity="0.4"/><stop offset="100%" stop-color="#9333EA" stop-opacity="0.15"/></linearGradient>
+        <linearGradient id="g3" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#9333EA" stop-opacity="0.3"/><stop offset="100%" stop-color="#EC4899" stop-opacity="0.1"/></linearGradient>
+        <linearGradient id="fadeBot" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#080808" stop-opacity="0"/><stop offset="60%" stop-color="#080808" stop-opacity="0.55"/><stop offset="100%" stop-color="#080808" stop-opacity="1"/></linearGradient>
+        <filter id="f1"><feGaussianBlur stdDeviation="22"/></filter>
+        <filter id="f3"><feGaussianBlur stdDeviation="35"/></filter>
+      </defs>
+      <path d="M -120 -80 C 60 -30,220 50,360 130 C 500 210,600 320,580 450 C 560 580,460 650,360 690 C 260 730,140 710,60 660 C -20 610,-60 530,-80 440 C -100 350,-80 240,-60 150 Z" fill="url(#g1)" filter="url(#f1)"/>
+      <path d="M 1560 -60 C 1420 10,1300 100,1240 210 C 1180 320,1200 450,1260 550 C 1320 650,1420 700,1480 780 C 1520 830,1540 880,1560 940 Z" fill="url(#g2)" filter="url(#f1)"/>
+      <path d="M -100 240 C 80 190,260 160,460 190 C 660 220,820 300,1020 320 C 1180 336,1340 295,1540 255 L 1540 345 C 1340 388,1180 432,1020 415 C 820 395,660 315,460 285 C 260 255,80 285,-100 338 Z" fill="url(#g3)" opacity="0.8"/>
+      <path d="M -100 510 C 120 460,320 440,540 465 C 760 490,920 560,1120 575 C 1280 588,1400 548,1540 508 L 1540 598 C 1400 642,1280 685,1120 670 C 920 652,760 580,540 556 C 320 532,120 556,-100 608 Z" fill="url(#g1)" opacity="0.6"/>
+      <ellipse cx="160" cy="180" rx="160" ry="110" fill="#9333EA" opacity="0.08" filter="url(#f3)"/>
+      <ellipse cx="1300" cy="220" rx="140" ry="100" fill="#EC4899" opacity="0.07" filter="url(#f3)"/>
+      <ellipse cx="700" cy="430" rx="250" ry="160" fill="#6B21A8" opacity="0.05" filter="url(#f3)"/>
+      <rect x="0" y="0" width="1440" height="900" fill="url(#fadeBot)"/>
+    </svg>
 
     <nav class="navbar">
         <div class="container nav-content">
@@ -133,12 +105,11 @@
         </div>
     </nav>
 
-    <!-- SUCCESS OVERLAY -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-card">
             <div class="success-icon">🎵</div>
             <h2 id="successTitle">COMMANDE ENVOYÉE !</h2>
-            <p id="successMsg">Merci pour ta confiance !<br>Vérifie ta boîte mail dans quelques instants 📧</p>
+            <p id="successMsg">Merci pour ta confiance !<br>Kaiju va vérifier ton paiement et t'envoyer tes beats sous peu 🔥</p>
             <a href="index.html" class="go-back" id="successBtn">RETOUR AU CATALOGUE</a>
         </div>
     </div>
@@ -151,13 +122,12 @@
         <div id="emptyCart" class="empty-cart" style="display:none">
             <i class="fas fa-shopping-bag"></i>
             <h2 id="emptyMsg">TON PANIER EST VIDE</h2>
-            <a href="index.html" class="back-btn" style="justify-content:center; margin-top:20px;">
+            <a href="index.html" class="back-btn" style="justify-content:center;margin-top:20px;">
                 <i class="fas fa-arrow-left"></i> RETOUR AU CATALOGUE
             </a>
         </div>
 
         <div class="checkout-wrapper" id="checkoutWrapper">
-            <!-- LEFT -->
             <div class="checkout-left">
                 <div class="checkout-card">
                     <h2><i class="fas fa-user"></i> <span id="formTitle">TES INFORMATIONS</span></h2>
@@ -169,28 +139,22 @@
                         <label id="labelEmail">TON EMAIL</label>
                         <input type="email" id="custEmail" placeholder="Ex: lenzo@gmail.com" required>
                     </div>
-                    <p style="font-size:0.65rem; color:#555; font-family:'Space Mono',monospace; line-height:1.6;" id="emailNote">
+                    <p style="font-size:0.65rem;color:var(--text-soft);font-family:'Space Mono',monospace;line-height:1.6" id="emailNote">
                         📧 Tes beats seront envoyés à cette adresse après vérification du paiement.
                     </p>
                 </div>
 
                 <div class="checkout-card">
                     <h2><i class="fas fa-credit-card"></i> <span id="payTitle">PAIEMENT SÉCURISÉ</span></h2>
-                    
-                    <!-- Steps indicator -->
                     <div class="steps-indicator">
                         <div class="step-dot active" id="dot1"></div>
-                        <div style="flex:1; height:1px; background:#222;"></div>
+                        <div style="flex:1;height:1px;background:#222"></div>
                         <div class="step-dot" id="dot2"></div>
-                        <div style="flex:1; height:1px; background:#222;"></div>
-                        <div class="step-dot" id="dot3"></div>
                     </div>
-
                     <div id="paypal-button-container"></div>
                 </div>
             </div>
 
-            <!-- RIGHT -->
             <div class="checkout-right">
                 <div class="checkout-card">
                     <h2><i class="fas fa-shopping-bag"></i> <span id="recapTitle">RÉCAP DE COMMANDE</span></h2>
@@ -207,11 +171,10 @@
         </div>
     </main>
 
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
     const EMAILJS_PUBLIC_KEY  = '7E6XV-vYEiZ0_WpyD';
     const EMAILJS_SERVICE_ID  = 'service_j2kw8w9';
-    const EMAILJS_TEMPLATE_FR = 'template_rbznd3c';
-    const EMAILJS_TEMPLATE_EN = 'template_ekgt4yq';
     const PAYPALME_LINK       = 'https://paypal.me/ItsKaiju09';
     const KAIJU_WHATSAPP      = '221777694864';
 
@@ -243,66 +206,49 @@
 
     const t = {
         fr: {
-            backLabel: 'RETOUR AU CATALOGUE',
-            formTitle: 'TES INFORMATIONS',
-            labelName: 'TON PRÉNOM',
-            labelEmail: 'TON EMAIL',
-            emailNote: '📧 Tes beats seront envoyés à cette adresse après vérification du paiement.',
-            payTitle: 'PAIEMENT SÉCURISÉ',
-            recapTitle: 'RÉCAP DE COMMANDE',
-            promoTxt: '✅ OFFRE 2+1 APPLIQUÉE — Le 3ème beat est offert !',
-            emptyMsg: 'TON PANIER EST VIDE',
-            successTitle: 'COMMANDE ENVOYÉE !',
-            successMsg: 'Merci pour ta confiance !<br>Vérifie ta boîte mail dans quelques instants 📧',
-            successBtn: 'RETOUR AU CATALOGUE',
-            errorName: 'Entre ton prénom pour continuer.',
-            errorEmail: 'Entre ton email pour recevoir tes beats.',
-            errorTx: '⚠️ Entre ton numéro de transaction pour continuer.',
-            errorCode: '⚠️ Code invalide. Vérifie le code reçu sur WhatsApp.',
-            step1Title: 'ÉTAPE 1 — PAYER VIA PAYPAL',
-            step2Title: '✅ ÉTAPE 2 — CONFIRMER LE PAIEMENT',
-            step2Desc: 'Sur PayPal, copie ton numéro de transaction (ex: 4XY12345AB678) et colle-le ci-dessous. On va vérifier ton paiement.',
-            step2Placeholder: 'Numéro de transaction PayPal...',
-            step2Btn: 'ENVOYER POUR VÉRIFICATION',
-            step3Title: '🔐 ÉTAPE 3 — ENTRER LE CODE',
-            step3Desc: 'Kaiju va vérifier ton paiement et t\'envoyer un code par WhatsApp. Entre ce code ci-dessous pour recevoir tes beats.',
-            step3Placeholder: 'Code reçu sur WhatsApp...',
-            step3Btn: 'RECEVOIR MES BEATS 🎵',
-            warningMsg: '⏳ Kaiju a bien reçu ta demande sur WhatsApp. Dès que ton paiement est vérifié, tu recevras un code pour débloquer tes beats. Ça prend généralement quelques minutes !',
+            backLabel:'RETOUR AU CATALOGUE', formTitle:'TES INFORMATIONS',
+            labelName:'TON PRÉNOM', labelEmail:'TON EMAIL',
+            emailNote:'📧 Tes beats seront envoyés à cette adresse après vérification du paiement.',
+            payTitle:'PAIEMENT SÉCURISÉ', recapTitle:'RÉCAP DE COMMANDE',
+            promoTxt:'✅ OFFRE 2+1 APPLIQUÉE — Le 3ème beat est offert !',
+            emptyMsg:'TON PANIER EST VIDE',
+            successTitle:'COMMANDE ENVOYÉE !',
+            successMsg:'Merci pour ta confiance !<br>Kaiju va vérifier ton paiement et t\'envoyer tes beats sous peu 🔥',
+            successBtn:'RETOUR AU CATALOGUE',
+            errorName:'Entre ton prénom pour continuer.',
+            errorEmail:'Entre ton email pour recevoir tes beats.',
+            errorTx:'⚠️ Entre ton numéro de transaction pour continuer.',
+            step1Title:'ÉTAPE 1 — PAYER VIA PAYPAL',
+            step2Title:'✅ ÉTAPE 2 — CONFIRMER LE PAIEMENT',
+            step2Desc:'Copie ton numéro de transaction PayPal (ex: 4XY12345AB678) et colle-le ci-dessous. Kaiju va vérifier et t\'envoyer tes beats par email.',
+            step2Placeholder:'Numéro de transaction PayPal...',
+            step2Btn:'ENVOYER MA COMMANDE 🎵',
+            confirmMsg:'⏳ Ta commande a bien été transmise à Kaiju ! Dès que le paiement est vérifié, tes beats arrivent dans ta boîte mail. Ça prend généralement quelques minutes.',
         },
         en: {
-            backLabel: 'BACK TO CATALOG',
-            formTitle: 'YOUR INFORMATION',
-            labelName: 'YOUR FIRST NAME',
-            labelEmail: 'YOUR EMAIL',
-            emailNote: '📧 Your beats will be sent to this address after payment verification.',
-            payTitle: 'SECURE PAYMENT',
-            recapTitle: 'ORDER SUMMARY',
-            promoTxt: '✅ 2+1 DEAL APPLIED — Your 3rd beat is on me!',
-            emptyMsg: 'YOUR CART IS EMPTY',
-            successTitle: 'ORDER SENT!',
-            successMsg: 'Thank you for your trust!<br>Check your inbox in a few moments 📧',
-            successBtn: 'BACK TO CATALOG',
-            errorName: 'Please enter your name to continue.',
-            errorEmail: 'Please enter your email to receive your beats.',
-            errorTx: '⚠️ Please enter your transaction ID to continue.',
-            errorCode: '⚠️ Invalid code. Check the code you received on WhatsApp.',
-            step1Title: 'STEP 1 — PAY VIA PAYPAL',
-            step2Title: '✅ STEP 2 — CONFIRM PAYMENT',
-            step2Desc: 'On PayPal, copy your transaction ID (e.g. 4XY12345AB678) and paste it below. We\'ll verify your payment.',
-            step2Placeholder: 'PayPal transaction ID...',
-            step2Btn: 'SEND FOR VERIFICATION',
-            step3Title: '🔐 STEP 3 — ENTER THE CODE',
-            step3Desc: 'Kaiju will verify your payment and send you a code via WhatsApp. Enter this code below to receive your beats.',
-            step3Placeholder: 'Code received on WhatsApp...',
-            step3Btn: 'RECEIVE MY BEATS 🎵',
-            warningMsg: '⏳ Kaiju received your request on WhatsApp. Once your payment is verified, you\'ll receive a code to unlock your beats. This usually takes a few minutes!',
+            backLabel:'BACK TO CATALOG', formTitle:'YOUR INFORMATION',
+            labelName:'YOUR FIRST NAME', labelEmail:'YOUR EMAIL',
+            emailNote:'📧 Your beats will be sent to this address after payment verification.',
+            payTitle:'SECURE PAYMENT', recapTitle:'ORDER SUMMARY',
+            promoTxt:'✅ 2+1 DEAL APPLIED — Your 3rd beat is on me!',
+            emptyMsg:'YOUR CART IS EMPTY',
+            successTitle:'ORDER SENT!',
+            successMsg:'Thank you for your trust!<br>Kaiju will verify your payment and send your beats shortly 🔥',
+            successBtn:'BACK TO CATALOG',
+            errorName:'Please enter your name to continue.',
+            errorEmail:'Please enter your email to receive your beats.',
+            errorTx:'⚠️ Please enter your transaction ID to continue.',
+            step1Title:'STEP 1 — PAY VIA PAYPAL',
+            step2Title:'✅ STEP 2 — CONFIRM PAYMENT',
+            step2Desc:'Copy your PayPal transaction ID (e.g. 4XY12345AB678) and paste it below. Kaiju will verify and send your beats by email.',
+            step2Placeholder:'PayPal transaction ID...',
+            step2Btn:'SEND MY ORDER 🎵',
+            confirmMsg:'⏳ Your order has been sent to Kaiju! Once payment is verified, your beats will arrive in your inbox. This usually takes a few minutes.',
         }
     };
 
-    // Init
     const lang = localStorage.getItem('kaijuLang') || 'fr';
-    const tx = t[lang];
+    const tx   = t[lang];
 
     document.getElementById('backLabel').textContent    = tx.backLabel;
     document.getElementById('formTitle').textContent    = tx.formTitle;
@@ -335,49 +281,34 @@
     }
 
     function renderRecap() {
-        const container = document.getElementById('recapItems');
         const total = calcTotal(cart);
         let html = '';
         cart.forEach((b, i) => {
             const isFree = (i + 1) % 3 === 0;
-            html += `
-                <div class="recap-item">
-                    <img class="recap-cover" src="${b.cover}" alt="${b.title}" onerror="this.style.display='none'">
-                    <div class="recap-info">
-                        <h4>${b.title}</h4>
-                        <small>${b.genre ? b.genre.toUpperCase() : 'BEAT'} - PROD BY KAIJU</small>
-                    </div>
-                    ${isFree ? `<span class="recap-free">OFFERT 🎁</span>` : `<span class="recap-price">39.99€</span>`}
-                </div>`;
+            html += `<div class="recap-item">
+                <img class="recap-cover" src="${b.cover}" alt="${b.title}" onerror="this.style.display='none'">
+                <div class="recap-info"><h4>${b.title}</h4><small>${b.genre ? b.genre.toUpperCase() : 'BEAT'} — PROD BY KAIJU</small></div>
+                ${isFree ? `<span class="recap-free">OFFERT 🎁</span>` : `<span class="recap-price">39.99€</span>`}
+            </div>`;
         });
-        container.innerHTML = html;
-        if (cart.length >= 3) {
-            document.getElementById('promoLine').innerHTML = `<div class="promo-line">${tx.promoTxt}</div>`;
-        }
+        document.getElementById('recapItems').innerHTML = html;
+        if (cart.length >= 3) document.getElementById('promoLine').innerHTML = `<div class="promo-line">${tx.promoTxt}</div>`;
         document.getElementById('recapTotal').textContent = calcTotal(cart) + '€';
     }
 
-    // Generate a random 6-digit unlock code
-    function generateCode() {
-        return Math.floor(100000 + Math.random() * 900000).toString();
-    }
-
-    let unlockCode = '';
-
     function setDot(step) {
-        ['dot1','dot2','dot3'].forEach((id, i) => {
+        ['dot1','dot2'].forEach((id, i) => {
             const dot = document.getElementById(id);
             dot.className = 'step-dot';
-            if (i + 1 < step) dot.classList.add('done');
+            if (i + 1 < step)  dot.classList.add('done');
             if (i + 1 === step) dot.classList.add('active');
         });
     }
 
     function initSteps() {
         const total = calcTotal(cart);
-        const isFr = lang === 'fr';
+        const isFr  = lang === 'fr';
 
-        // STEP 1 — PayPal button
         document.getElementById('paypal-button-container').innerHTML = `
             <div id="step1Div">
                 <p class="step-title">${tx.step1Title}</p>
@@ -385,7 +316,7 @@
                     <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal" style="height:20px;">
                     <span>${isFr ? `PAYER ${total}€ VIA PAYPAL` : `PAY ${total}€ VIA PAYPAL`}</span>
                 </button>
-                <p style="font-size:0.63rem; color:#444; font-family:'Space Mono',monospace; text-align:center; margin-top:10px;">
+                <p style="font-size:0.63rem;color:#444;font-family:'Space Mono',monospace;text-align:center;margin-top:10px;">
                     🔒 ${isFr ? 'Redirection sécurisée vers PayPal' : 'Secure redirect to PayPal'}
                 </p>
             </div>
@@ -394,137 +325,92 @@
                 <p class="step-title">${tx.step2Title}</p>
                 <p class="step-desc">${tx.step2Desc}</p>
                 <input type="text" class="step-input" id="transactionId" placeholder="${tx.step2Placeholder}">
+                <p class="error-msg" id="txError">${tx.errorTx}</p>
                 <button class="action-btn" id="sendVerifBtn">
                     <i class="fas fa-paper-plane"></i> ${tx.step2Btn}
                 </button>
-                <p class="error-msg" id="txError">${tx.errorTx}</p>
             </div>
 
-            <div id="step3Div" class="step-box" style="display:none;">
-                <p class="step-title">${tx.step3Title}</p>
-                <div class="warning-box" style="margin-bottom:14px;">
-                    <p>${tx.warningMsg}</p>
-                </div>
-                <p class="step-desc">${tx.step3Desc}</p>
-                <input type="text" class="step-input" id="unlockInput" placeholder="${tx.step3Placeholder}" maxlength="6">
-                <button class="action-btn" id="unlockBtn">
-                    <i class="fas fa-unlock"></i> ${tx.step3Btn}
-                </button>
-                <p class="error-msg" id="codeError">${tx.errorCode}</p>
+            <div id="confirmDiv" style="display:none;">
+                <div class="confirm-box"><p>${tx.confirmMsg}</p></div>
             </div>
         `;
 
-        // STEP 1 → STEP 2
+        // ÉTAPE 1 → ouvre PayPal, puis affiche step2
         document.getElementById('paypalMeBtn').onclick = () => {
-            const name = document.getElementById('custName').value.trim();
+            const name  = document.getElementById('custName').value.trim();
             const email = document.getElementById('custEmail').value.trim();
-            if (!name) { alert(tx.errorName); return; }
+            if (!name)  { alert(tx.errorName);  return; }
             if (!email || !email.includes('@')) { alert(tx.errorEmail); return; }
             window.open(`${PAYPALME_LINK}/${total}EUR`, '_blank');
             setTimeout(() => {
                 document.getElementById('step2Div').style.display = 'block';
                 setDot(2);
+                document.getElementById('step2Div').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }, 1500);
         };
 
-        // STEP 2 → STEP 3: Send WhatsApp to Kaiju with transaction ID + unlock code
+        // ÉTAPE 2 → envoie tout à Kaiju par WhatsApp + magic link send-beats
         document.getElementById('sendVerifBtn').onclick = () => {
             const name  = document.getElementById('custName').value.trim();
             const email = document.getElementById('custEmail').value.trim();
             const txId  = document.getElementById('transactionId').value.trim();
+
             if (!txId || txId.length < 4) {
                 document.getElementById('txError').style.display = 'block';
                 return;
             }
             document.getElementById('txError').style.display = 'none';
 
-            const beatList = cart.map(b => b.title).join(', ');
-            // Lien court send-beats
-            const d = btoa(JSON.stringify({n:name, e:email, b:cart.map(x=>x.title).join(','), t:total, l:lang}));
+            const btn = document.getElementById('sendVerifBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
+
+            // Magic link réservé à Kaiju — contient nom, email, beats, total
+            const d = btoa(JSON.stringify({
+                n: name,
+                e: email,
+                b: cart.map(x => x.title).join(','),
+                t: total,
+                l: lang
+            }));
             const magicLink = `https://callmekaiju25-afk.github.io/Kaiju/send-beats.html?d=${encodeURIComponent(d)}`;
+            const beatList  = cart.map(b => b.title).join(', ');
+
             const waMsg = encodeURIComponent(
-                `💰 COMMANDE KAIJU BEATS\n` +
+                `💰 NOUVELLE COMMANDE — KAIJU BEATS\n` +
                 `👤 ${name}\n` +
                 `📧 ${email}\n` +
                 `🎵 ${beatList}\n` +
                 `💵 ${total}€\n` +
-                `🧾 PayPal: ${txId}\n\n` +
-                `✅ Envoyer les beats:\n${magicLink}`
+                `🧾 PayPal TX: ${txId}\n\n` +
+                `✅ Après vérif paiement, envoie les beats ici :\n${magicLink}`
             );
+
             window.open(`https://wa.me/${KAIJU_WHATSAPP}?text=${waMsg}`, '_blank');
 
+            // Masquer les étapes et afficher confirmation
+            document.getElementById('step1Div').style.display = 'none';
+            document.getElementById('step2Div').style.display = 'none';
+            document.getElementById('confirmDiv').style.display = 'block';
+
             setTimeout(() => {
-                document.getElementById('step3Div') && (document.getElementById('step3Div').style.display = 'block');
-            }, 1000);
-        };
-
-        // STEP 3 → Send email with beats
-        document.getElementById('unlockBtn').onclick = () => {
-            const inputCode = document.getElementById('unlockInput').value.trim();
-            if (inputCode !== unlockCode) {
-                document.getElementById('codeError').style.display = 'block';
-                return;
-            }
-            document.getElementById('codeError').style.display = 'none';
-            document.getElementById('unlockBtn').disabled = true;
-            document.getElementById('unlockBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
-            sendBeats();
+                localStorage.removeItem('kaijuCart');
+                document.getElementById('successOverlay').classList.add('show');
+            }, 2500);
         };
     }
 
-    function sendBeats() {
-        const name  = document.getElementById('custName').value.trim();
-        const email = document.getElementById('custEmail').value.trim();
-        const total = calcTotal(cart);
-
-        const downloadLinks = cart.map((b, i) => {
-            const isFree = (i + 1) % 3 === 0;
-            const link = driveLinks[b.title] || '#';
-            const tag = isFree ? (lang === 'fr' ? ' 🎁 OFFERT' : ' 🎁 FREE') : '';
-            return `🎵 ${b.title}${tag}\n${link}`;
-        }).join('\n\n');
-
-        emailjs.send(
-            EMAILJS_SERVICE_ID,
-            lang === 'fr' ? EMAILJS_TEMPLATE_FR : EMAILJS_TEMPLATE_EN,
-            {
-                customer_name:  name,
-                customer_email: email,
-                download_links: downloadLinks,
-                total:          total,
-            }
-        ).then(() => {
-            localStorage.removeItem('kaijuCart');
-            document.getElementById('successOverlay').classList.add('show');
-        }).catch(err => {
-            console.error('EmailJS error:', err);
-            localStorage.removeItem('kaijuCart');
-            document.getElementById('successOverlay').classList.add('show');
-        });
-    }
-
-
-    // Curseur
     window.addEventListener('load', function() {
-        var d = document.getElementById('cursorDot');
-        var r = document.getElementById('cursorRing');
+        const d = document.getElementById('cursorDot');
+        const r = document.getElementById('cursorRing');
         if (!d || !r) return;
-        var mx=0, my=0, rx=0, ry=0;
-        document.addEventListener('mousemove', function(e) {
-            mx = e.clientX; my = e.clientY;
-            d.style.left = mx + 'px';
-            d.style.top = my + 'px';
-        });
-        (function loop() {
-            rx += (mx - rx) * 0.12;
-            ry += (my - ry) * 0.12;
-            r.style.left = rx + 'px';
-            r.style.top = ry + 'px';
-            requestAnimationFrame(loop);
-        })();
-        document.querySelectorAll('button, a, input').forEach(function(el) {
-            el.addEventListener('mouseenter', function() { d.classList.add('hovering'); r.classList.add('hovering'); });
-            el.addEventListener('mouseleave', function() { d.classList.remove('hovering'); r.classList.remove('hovering'); });
+        let mx=0, my=0, rx=0, ry=0;
+        document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; d.style.left=mx+'px'; d.style.top=my+'px'; });
+        (function loop(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; r.style.left=rx+'px'; r.style.top=ry+'px'; requestAnimationFrame(loop); })();
+        document.querySelectorAll('button,a,input').forEach(el => {
+            el.addEventListener('mouseenter', () => { d.classList.add('hovering'); r.classList.add('hovering'); });
+            el.addEventListener('mouseleave', () => { d.classList.remove('hovering'); r.classList.remove('hovering'); });
         });
     });
     </script>
