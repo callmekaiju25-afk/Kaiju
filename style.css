@@ -1,6 +1,6 @@
 /* ============================================================
    KAIJU BEATS — DARK PREMIUM v3.0
-   #0B0B0F | #7B2CBF violet | #7B2CBF rose | #F1F5F9 blanc
+   #0B0B0F | #C1121F rouge | #7B2CBF violet | #E8E8E8 blanc
    ============================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap');
 
@@ -23,10 +23,6 @@
   --font-b:      'Space Mono', monospace;
   --radius:      14px;
   --ease-bounce: cubic-bezier(0.34,1.56,0.64,1);
-  --red:         #C1121F;
-  --red-hi:      #E5383B;
-  --violet:      #7B2CBF;
-  --violet-hi:   #9D4EDD;
   --ease-smooth: cubic-bezier(0.4,0,0.2,1);
 }
 
@@ -688,3 +684,450 @@ main.container { padding-top:44px; position:relative; z-index:10; }
 @media(max-width:960px){.container{padding:0 26px}.testimonials-grid{grid-template-columns:1fr;max-width:400px;margin:0 auto}}
 @media(max-width:768px){.beats-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}.player-grid{grid-template-columns:auto 1fr}.p-vol{display:none}}
 @media(max-width:580px){.container{padding:0 18px}.nav-right .nav-link-btn:not(.readme-btn){display:none}.lang-options{flex-direction:column}}
+
+/* ============================================================
+   KAIJU BEATS — AMÉLIORATIONS VISUELLES v3.4
+   Ajouts purs CSS/animation — zero logique touchée
+   ============================================================ */
+
+/* ===== SCROLLBAR AMÉLIORÉE ===== */
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:#0B0B0F; }
+::-webkit-scrollbar-thumb {
+  background:linear-gradient(180deg,var(--violet),var(--red));
+  border-radius:3px;
+}
+
+/* ===== SÉLECTION TEXTE ===== */
+::selection { background:rgba(193,18,31,0.3); color:#fff; }
+
+/* ===== HERO TITLE — ligne déco animée sous le titre ===== */
+.hero-section { padding-bottom: 10px; }
+.hero-tagline {
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(193,18,31,0.07);
+  border:1px solid rgba(193,18,31,0.2);
+  border-radius:20px; padding:5px 16px;
+}
+
+/* ===== PROMO BAR — double sweep ===== */
+.promo-bar::before {
+  content:''; position:absolute; top:0; left:-100%; width:20%; height:100%;
+  background:linear-gradient(90deg,transparent,rgba(193,18,31,0.08),transparent);
+  animation:sweep 4.5s linear infinite 2.25s;
+}
+
+/* ===== BEAT CARDS — numéro visible en permanence ===== */
+.beat-card .beat-meta::after {
+  opacity:0.35 !important;
+  transition:opacity .3s;
+}
+.beat-card:hover .beat-meta::after { opacity:0.08 !important; }
+
+/* ===== BEAT CARD — glow rouge au hover ===== */
+.beat-card:hover {
+  box-shadow:
+    0 20px 60px rgba(193,18,31,0.22),
+    0 0 0 1px rgba(193,18,31,0.12) !important;
+}
+
+/* ===== OVERLAY PLAY — animation pulse sur le bouton ===== */
+@keyframes play-pulse {
+  0%,100%{ box-shadow:0 4px 24px rgba(123,44,191,0.7) }
+  50%    { box-shadow:0 4px 36px rgba(193,18,31,0.8), 0 0 0 6px rgba(193,18,31,0.1) }
+}
+.beat-card:hover .overlay-play button {
+  animation:play-pulse 2s ease-in-out infinite;
+}
+
+/* ===== WAVEFORM — gradient rouge/violet ===== */
+.wave-bar {
+  background:linear-gradient(180deg,var(--red-hi),var(--violet)) !important;
+}
+
+/* ===== FILTER BAR — focus glow rouge ===== */
+.search-box:focus-within {
+  border-color:rgba(193,18,31,0.5) !important;
+  box-shadow:0 0 0 3px rgba(193,18,31,0.08), 0 4px 24px rgba(193,18,31,0.12) !important;
+}
+
+/* ===== CUSTOM SELECT — arrow rotate ===== */
+.custom-select.open .custom-select-btn i {
+  transform:rotate(180deg);
+  transition:transform .3s;
+}
+.custom-select-btn i { transition:transform .3s; }
+
+/* ===== SHUFFLE BTN — icône spin quand actif ===== */
+.shuffle-btn.active i { animation:spin-slow 2s linear infinite; }
+@keyframes spin-slow { to{ transform:rotate(360deg) } }
+
+/* ===== PLAYER — cover tourne quand lecture ===== */
+@keyframes cover-spin {
+  from{ transform:rotate(0deg) }
+  to  { transform:rotate(360deg) }
+}
+.p-cover-wrapper.playing img {
+  animation:cover-spin 8s linear infinite;
+  border-radius:50% !important;
+}
+.p-cover-wrapper.playing {
+  border-radius:50% !important;
+  border-color:rgba(193,18,31,0.5) !important;
+  box-shadow:0 0 0 3px rgba(193,18,31,0.15) !important;
+}
+
+/* ===== PLAYER — progress fill couleur ===== */
+.player-progress-fill {
+  background:linear-gradient(90deg,var(--violet),var(--red-hi)) !important;
+}
+#pProgress::-webkit-slider-thumb {
+  background:var(--red-hi) !important;
+  box-shadow:0 0 8px rgba(229,56,59,0.7) !important;
+}
+
+/* ===== NAVBAR BTN — underline slide ===== */
+.nav-link-btn::after {
+  content:''; position:absolute; bottom:0; left:10%; right:10%; height:1px;
+  background:linear-gradient(90deg,var(--violet),var(--red));
+  transform:scaleX(0); transform-origin:left; transition:transform .3s; z-index:1;
+}
+.nav-link-btn:not(:hover)::after { transform:scaleX(0); }
+
+/* ===== CART BADGE — pulse quand > 0 ===== */
+.cart-badge:not(:empty):not([data-count="0"]) {
+  animation:badge-pulse 2s ease-in-out infinite;
+}
+@keyframes badge-pulse {
+  0%,100%{ box-shadow:0 0 0 0 rgba(193,18,31,0.4) }
+  50%    { box-shadow:0 0 0 5px rgba(193,18,31,0) }
+}
+
+/* ===== TESTIMONIALS — étoiles brillent ===== */
+@keyframes star-shine {
+  0%,100%{ text-shadow:none; color:var(--violet-hi) }
+  50%    { text-shadow:0 0 10px rgba(193,18,31,0.6); color:var(--red-hi) }
+}
+.testi-stars { animation:star-shine 3s ease-in-out infinite; }
+.testi-card:nth-child(2) .testi-stars { animation-delay:1s; }
+.testi-card:nth-child(3) .testi-stars { animation-delay:2s; }
+
+/* ===== SECTION DIVIDER — animation pulse ===== */
+.section-divider {
+  animation:divider-glow 4s ease-in-out infinite;
+}
+@keyframes divider-glow {
+  0%,100%{ opacity:0.6 }
+  50%    { opacity:1 }
+}
+
+/* ===== FOOTER — logo hover glow ===== */
+.footer-logo {
+  transition:filter .4s, opacity .4s, transform .4s;
+}
+.footer-logo:hover {
+  opacity:0.9 !important;
+  filter:drop-shadow(0 0 16px rgba(193,18,31,0.6)) !important;
+  transform:scale(1.05);
+}
+
+/* ===== MODALS — ligne top gradient rouge/violet ===== */
+.modal-card::before {
+  background:linear-gradient(90deg,transparent,var(--red),var(--violet),transparent) !important;
+}
+
+/* ===== GENRE BADGE — couleur au hover carte ===== */
+.beat-card:hover .genre-badge {
+  background:rgba(193,18,31,0.12) !important;
+  border-color:rgba(193,18,31,0.3) !important;
+  color:var(--red-hi) !important;
+}
+
+/* ===== CLOSE BTN — rotate + rouge ===== */
+.close-btn:hover {
+  background:rgba(193,18,31,0.1) !important;
+  border-color:rgba(193,18,31,0.4) !important;
+  color:var(--red-hi) !important;
+}
+
+/* ===== LANG MODAL — glow logo ===== */
+.lang-logo-img {
+  filter:drop-shadow(0 4px 20px rgba(193,18,31,0.5)) drop-shadow(0 0 40px rgba(123,44,191,0.3)) !important;
+}
+.lang-btn:hover {
+  background:rgba(193,18,31,0.06) !important;
+  border-color:rgba(193,18,31,0.35) !important;
+}
+
+/* ===== NOW PLAYING TAG ===== */
+.now-playing-tag {
+  display:none; position:absolute; top:8px; left:8px; z-index:6;
+  background:linear-gradient(135deg,rgba(123,44,191,0.92),rgba(193,18,31,0.92));
+  backdrop-filter:blur(8px); border-radius:20px;
+  padding:4px 10px; font-family:var(--font-d); font-size:0.52rem;
+  font-weight:700; letter-spacing:2px; color:#fff;
+  align-items:center; gap:5px;
+  box-shadow:0 2px 12px rgba(193,18,31,0.4);
+}
+.beat-card.now-playing .now-playing-tag { display:flex; }
+.np-dot {
+  width:5px; height:5px; border-radius:50%; background:#fff;
+  animation:np-blink 1s ease-in-out infinite;
+  box-shadow:0 0 6px rgba(255,255,255,0.8);
+}
+@keyframes np-blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.2;transform:scale(0.7)} }
+
+/* ===== BEAT CARD NOW PLAYING — border glow ===== */
+.beat-card.now-playing {
+  border-color:rgba(193,18,31,0.5) !important;
+  box-shadow:0 0 0 1px rgba(193,18,31,0.2), 0 20px 50px rgba(193,18,31,0.2) !important;
+}
+.beat-card.now-playing::before { transform:scaleX(1) !important; }
+
+/* ===== INTRO SCREEN — amélioration ===== */
+#introScreen {
+  background:radial-gradient(ellipse at center, #12080F 0%, #0B0B0F 60%) !important;
+}
+
+/* ===== TOAST — amélioration ===== */
+.kaiju-toast { cursor:none !important; }
+
+/* ============================================================
+   KAIJU BEATS — POLISH v3.5 — append only, nothing modified
+   ============================================================ */
+
+/* ===== BEAT CARD — image zoom plus doux + overlay gradient ===== */
+.img-box::after {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(180deg,
+    transparent 40%,
+    rgba(11,11,15,0.55) 100%
+  );
+  pointer-events:none;
+  opacity:0; transition:opacity .4s;
+}
+.beat-card:hover .img-box::after { opacity:1; }
+
+/* ===== BEAT CARD — reflet lumineux en haut ===== */
+.beat-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,
+    transparent 0%,
+    rgba(193,18,31,0.6) 50%,
+    transparent 100%
+  );
+  transform:scaleX(0);
+  transform-origin:center;
+  transition:transform .4s;
+  z-index:2;
+}
+.beat-card:hover::before { transform:scaleX(1); }
+
+/* ===== NAV BUTTONS — effet scanline au hover ===== */
+@keyframes btn-scan {
+  from { top: -100%; }
+  to   { top:  200%; }
+}
+.nav-link-btn .btn-scan {
+  position:absolute; left:0; width:100%; height:30%;
+  background:linear-gradient(180deg, transparent, rgba(255,255,255,0.06), transparent);
+  pointer-events:none; opacity:0; transition:opacity .1s;
+}
+.nav-link-btn:hover .btn-scan {
+  opacity:1;
+  animation:btn-scan .6s ease forwards;
+}
+
+/* ===== HERO CTA — shimmer continu ===== */
+@keyframes cta-shimmer {
+  0%   { background-position:200% center; }
+  100% { background-position:-200% center; }
+}
+.hero-cta {
+  background-size:300% auto !important;
+  background-image:linear-gradient(
+    135deg,
+    #7B2CBF 0%,
+    #C1121F 30%,
+    #E5383B 50%,
+    #C1121F 70%,
+    #7B2CBF 100%
+  ) !important;
+  animation:fadeup .8s ease .9s forwards, cta-shimmer 4s linear infinite !important;
+}
+
+/* ===== PROMO BAR — fond légèrement animé ===== */
+@keyframes promo-bg {
+  0%,100% { background-position:0% 50%; }
+  50%     { background-position:100% 50%; }
+}
+.promo-bar {
+  background-size:200% 200% !important;
+  animation:promo-bg 6s ease infinite !important;
+}
+
+/* ===== FILTER SEARCH — icône animée au focus ===== */
+.search-box:focus-within i {
+  color:var(--red-hi) !important;
+  animation:icon-float 1.5s ease-in-out infinite;
+}
+
+/* ===== CUSTOM SELECT — items avec indicateur gauche ===== */
+.custom-select-item::before {
+  content:'';
+  display:inline-block; width:0; height:8px;
+  background:var(--red); border-radius:2px;
+  margin-right:0; vertical-align:middle;
+  transition:width .2s, margin-right .2s;
+}
+.custom-select-item:hover::before,
+.custom-select-item.active::before {
+  width:3px; margin-right:8px;
+}
+
+/* ===== MODAL — fond légèrement brillant ===== */
+.modal-overlay {
+  background:radial-gradient(
+    ellipse at center,
+    rgba(123,44,191,0.08) 0%,
+    rgba(0,0,0,0.88) 70%
+  ) !important;
+}
+
+/* ===== CONTACT / SOCIALS ITEMS — icon tourne au hover ===== */
+.c-item:hover .c-icon {
+  animation:icon-spin-once .4s var(--ease-bounce);
+}
+@keyframes icon-spin-once {
+  0%   { transform:scale(1.12) rotate(0deg); }
+  50%  { transform:scale(1.12) rotate(-15deg); }
+  100% { transform:scale(1.12) rotate(0deg); }
+}
+
+/* ===== TESTI CARD — shimmer discret au hover ===== */
+.testi-card::after {
+  content:'';
+  position:absolute; top:0; left:-100%; width:60%; height:100%;
+  background:linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(123,44,191,0.04) 50%,
+    transparent 70%
+  );
+  transition:left .6s;
+  pointer-events:none;
+}
+.testi-card:hover::after { left:150%; }
+
+/* ===== PLAYER — glow sur le bouton play ===== */
+@keyframes play-glow {
+  0%,100% { box-shadow:0 4px 20px rgba(193,18,31,0.45); }
+  50%     { box-shadow:0 4px 32px rgba(193,18,31,0.75), 0 0 0 4px rgba(193,18,31,0.1); }
+}
+.play-main-btn {
+  animation:play-glow 2.5s ease-in-out infinite;
+}
+
+/* ===== PLAYER — info beat apparaît en slide ===== */
+@keyframes info-slide {
+  from { opacity:0; transform:translateX(-8px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+#pTitle {
+  animation:info-slide .3s ease forwards;
+}
+
+/* ===== LANG MODAL — carte légère bordure animée ===== */
+@keyframes border-spin {
+  0%   { background-position:0% 50%; }
+  50%  { background-position:100% 50%; }
+  100% { background-position:0% 50%; }
+}
+
+/* ===== SCROLLBAR — thumb glow ===== */
+::-webkit-scrollbar-thumb:hover {
+  background:linear-gradient(180deg,var(--red-hi),var(--violet)) !important;
+  box-shadow:0 0 6px rgba(193,18,31,0.5);
+}
+
+/* ===== FOOTER — links hover underline slide ===== */
+.footer-links a {
+  position:relative;
+  padding-bottom:2px;
+}
+.footer-links a::after {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,var(--violet),var(--red));
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .3s;
+}
+.footer-links a:hover::after { transform:scaleX(1); }
+
+/* ===== GENRE BADGE — tag petit point devant ===== */
+.genre-badge::before {
+  content:'◆ ';
+  font-size:0.4rem;
+  vertical-align:middle;
+  opacity:0.6;
+}
+
+/* ===== BG GLOW — légèrement plus visible ===== */
+.bg-glow::before {
+  background:radial-gradient(
+    ellipse,
+    rgba(123,44,191,0.13) 0%,
+    rgba(123,44,191,0.04) 40%,
+    transparent 70%
+  ) !important;
+}
+.bg-glow::after {
+  background:radial-gradient(
+    ellipse,
+    rgba(193,18,31,0.10) 0%,
+    transparent 65%
+  ) !important;
+}
+
+/* ===== SECTION DIVIDER — plus travaillé ===== */
+.section-divider {
+  height:2px !important;
+  background:linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(123,44,191,0.4) 20%,
+    rgba(193,18,31,0.6) 50%,
+    rgba(123,44,191,0.4) 80%,
+    transparent 100%
+  ) !important;
+  position:relative;
+}
+.section-divider::after {
+  content:'◆';
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  font-size:0.5rem;
+  color:var(--red-hi);
+  background:var(--bg);
+  padding:0 8px;
+  animation:star-pulse 3s ease-in-out infinite;
+}
+
+/* ===== CART ITEM — hover highlight ===== */
+.cart-item {
+  transition:background .2s, padding-left .2s;
+  border-radius:6px;
+  padding-left:4px;
+}
+.cart-item:hover {
+  background:rgba(193,18,31,0.05);
+  padding-left:8px;
+}
+
+/* ===== README / IMPORTANT BOX ===== */
+.readme-important {
+  border-left:3px solid var(--red) !important;
+  border-radius:0 10px 10px 0 !important;
+}

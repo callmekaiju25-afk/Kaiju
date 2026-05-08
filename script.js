@@ -583,3 +583,244 @@ document.addEventListener('DOMContentLoaded', () => {
         if (h1) h1.classList.add('revealed');
     }, 400);
 });
+
+/* ============================================================
+   KAIJU BEATS — AMÉLIORATIONS VISUELLES v3.4
+   Ajouts purement visuels — zero logique touchée
+   ============================================================ */
+
+// ===== COVER QUI TOURNE PENDANT LA LECTURE =====
+(function() {
+    var cover = null;
+    function updateCoverSpin() {
+        cover = document.getElementById('pCover');
+        var wrapper = cover && cover.parentElement;
+        if (!wrapper) return;
+        var audio = document.getElementById('mainAudio');
+        if (!audio) return;
+        audio.addEventListener('play',  function() { wrapper.classList.add('playing'); });
+        audio.addEventListener('pause', function() { wrapper.classList.remove('playing'); });
+        audio.addEventListener('ended', function() { wrapper.classList.remove('playing'); });
+    }
+    document.readyState === 'loading'
+        ? document.addEventListener('DOMContentLoaded', updateCoverSpin)
+        : updateCoverSpin();
+})();
+
+// ===== TILT 3D LÉGER SUR LES BEAT CARDS =====
+(function() {
+    function initTilt() {
+        document.addEventListener('mousemove', function(e) {
+            var cards = document.querySelectorAll('.beat-card:hover');
+            cards.forEach(function(card) {
+                var rect = card.getBoundingClientRect();
+                var x = (e.clientX - rect.left) / rect.width  - 0.5;
+                var y = (e.clientY - rect.top)  / rect.height - 0.5;
+                card.style.transform = 'translateY(-8px) scale(1.01) rotateX(' + (-y * 6) + 'deg) rotateY(' + (x * 6) + 'deg)';
+            });
+        });
+        // Reset on leave
+        document.addEventListener('mouseleave', function(e) {
+            if (e.target && e.target.classList && e.target.classList.contains('beat-card')) {
+                e.target.style.transform = '';
+            }
+        }, true);
+    }
+    document.readyState === 'loading'
+        ? document.addEventListener('DOMContentLoaded', initTilt)
+        : initTilt();
+})();
+
+// ===== BADGE PANIER — animation chiffre qui monte =====
+(function() {
+    var prevCount = 0;
+    var origUpdateCart = window.updateCart || null;
+    // On observe le badge plutôt que de toucher updateCart
+    var badge = null;
+    function watchBadge() {
+        badge = document.getElementById('cartCount');
+        if (!badge) return;
+        var observer = new MutationObserver(function() {
+            var newCount = parseInt(badge.textContent) || 0;
+            if (newCount > prevCount) {
+                badge.style.transform = 'scale(1.6)';
+                badge.style.background = 'var(--red)';
+                setTimeout(function() {
+                    badge.style.transform = '';
+                    badge.style.background = '';
+                }, 300);
+            }
+            prevCount = newCount;
+        });
+        observer.observe(badge, { childList:true, characterData:true, subtree:true });
+    }
+    document.readyState === 'loading'
+        ? document.addEventListener('DOMContentLoaded', watchBadge)
+        : watchBadge();
+})();
+
+// ===== PROMO BAR — texte défilant sur mobile =====
+(function() {
+    if (window.innerWidth > 600) return;
+    var bar = document.querySelector('.promo-bar span');
+    if (!bar) return;
+    bar.style.animation = 'marquee-scroll 12s linear infinite';
+    var style = document.createElement('style');
+    style.textContent = '@keyframes marquee-scroll{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}';
+    document.head.appendChild(style);
+})();
+
+/* ============================================================
+   KAIJU BEATS — POLISH v3.5 — append only, nothing modified
+   ============================================================ */
+
+// ===== SCAN LINES sur les beat cards au hover =====
+(function() {
+    function addScanEffect() {
+        var style = document.createElement('style');
+        style.textContent = [
+            '@keyframes card-scan{from{top:-100%}to{top:200%}}',
+            '.beat-card .card-scan-line{',
+            '  position:absolute;left:0;width:100%;height:40%;',
+            '  background:linear-gradient(180deg,transparent,rgba(193,18,31,0.03),transparent);',
+            '  pointer-events:none;opacity:0;z-index:3;',
+            '}',
+            '.beat-card:hover .card-scan-line{',
+            '  opacity:1;animation:card-scan 1.5s ease-in-out infinite;',
+            '}'
+        ].join('');
+        document.head.appendChild(style);
+    }
+    document.readyState === 'loading'
+        ? document.addEventListener('DOMContentLoaded', addScanEffect)
+        : addScanEffect();
+})();
+
+// ===== INJECT scan line div dans chaque card au render =====
+(function() {
+    var origRender = null;
+    // Observer les nouvelles cartes et injecter le scan line
+    function injectScanLines() {
+        document.querySelectorAll('.beat-card:not([data-scan])').forEach(function(card) {
+            card.setAttribute('data-scan','1');
+            var sl = document.createElement('div');
+            sl.className = 'card-scan-line';
+            card.appendChild(sl);
+        });
+    }
+    new MutationObserver(injectScanLines)
+        .observe(document.getElementById('beatsGrid') || document.body, {childList:true, subtree:true});
+})();
+
+// ===== PARTICULES AU CLIC SUR "AJOUTER AU PANIER" =====
+(function() {
+    function burst(x, y) {
+        var colors = ['#C1121F','#E5383B','#7B2CBF','#9D4EDD','#fff'];
+        for (var i = 0; i < 8; i++) {
+            var p = document.createElement('div');
+            var angle = (i / 8) * Math.PI * 2;
+            var dist  = 40 + Math.random() * 30;
+            var size  = 3 + Math.random() * 3;
+            var color = colors[Math.floor(Math.random() * colors.length)];
+            p.style.cssText = [
+                'position:fixed',
+                'left:' + x + 'px',
+                'top:'  + y + 'px',
+                'width:' + size + 'px',
+                'height:' + size + 'px',
+                'border-radius:50%',
+                'background:' + color,
+                'pointer-events:none',
+                'z-index:999997',
+                'transform:translate(-50%,-50%)',
+                'animation:burst-particle .6s ease-out forwards'
+            ].join(';');
+            p.style.setProperty('--dx', (Math.cos(angle) * dist) + 'px');
+            p.style.setProperty('--dy', (Math.sin(angle) * dist) + 'px');
+            document.body.appendChild(p);
+            setTimeout(function(el){ el.remove(); }, 650, p);
+        }
+    }
+    var style = document.createElement('style');
+    style.textContent = '@keyframes burst-particle{to{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy)));opacity:0;}}';
+    document.head.appendChild(style);
+
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.buy-btn');
+        if (!btn) return;
+        var r = btn.getBoundingClientRect();
+        burst(r.left + r.width/2, r.top + r.height/2);
+    });
+})();
+
+// ===== TITRE GLITCH AU SCROLL =====
+(function() {
+    var h1 = null;
+    var glitching = false;
+    function tryGlitch() {
+        if (!h1) h1 = document.querySelector('.catalog-header h1');
+        if (!h1 || glitching) return;
+        glitching = true;
+        h1.style.animation = 'glitch .4s steps(2) forwards';
+        setTimeout(function() {
+            h1.style.animation = '';
+            glitching = false;
+        }, 400);
+    }
+    var lastScroll = 0;
+    window.addEventListener('scroll', function() {
+        var y = window.scrollY;
+        // Glitch quand on arrive dans la zone catalog
+        if (y > 400 && lastScroll <= 400) tryGlitch();
+        lastScroll = y;
+    }, {passive:true});
+})();
+
+// ===== MAGNETIC EFFECT sur les boutons navbar =====
+(function() {
+    function initMagnetic() {
+        document.querySelectorAll('.nav-link-btn, .cart-trigger').forEach(function(btn) {
+            btn.addEventListener('mousemove', function(e) {
+                var r = btn.getBoundingClientRect();
+                var x = (e.clientX - r.left - r.width/2)  * 0.25;
+                var y = (e.clientY - r.top  - r.height/2) * 0.25;
+                btn.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+            });
+            btn.addEventListener('mouseleave', function() {
+                btn.style.transform = '';
+            });
+        });
+    }
+    document.readyState === 'loading'
+        ? document.addEventListener('DOMContentLoaded', initMagnetic)
+        : initMagnetic();
+})();
+
+// ===== TYPING EFFECT sur le placeholder search =====
+(function() {
+    var input = null;
+    var phrases = ['Rechercher un beat...', 'CARNAGE, MIRAGE...', 'Trap, Drill, Afro...', 'Ton prochain son...'];
+    var phraseIdx = 0, charIdx = 0, deleting = false, timeout = null;
+    function type() {
+        if (!input) { input = document.getElementById('searchInput'); if (!input) return; }
+        if (document.activeElement === input) { timeout = setTimeout(type, 200); return; }
+        var phrase = phrases[phraseIdx];
+        if (!deleting) {
+            charIdx++;
+            input.placeholder = phrase.substring(0, charIdx);
+            if (charIdx === phrase.length) { deleting = true; timeout = setTimeout(type, 1800); return; }
+        } else {
+            charIdx--;
+            input.placeholder = phrase.substring(0, charIdx);
+            if (charIdx === 0) {
+                deleting = false;
+                phraseIdx = (phraseIdx + 1) % phrases.length;
+                timeout = setTimeout(type, 400); return;
+            }
+        }
+        timeout = setTimeout(type, deleting ? 40 : 80);
+    }
+    document.readyState === 'loading'
+        ? document.addEventListener('DOMContentLoaded', function(){ setTimeout(type, 2000); })
+        : setTimeout(type, 2000);
+})();
