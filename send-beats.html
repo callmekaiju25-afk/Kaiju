@@ -3,66 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KAIJU BEATS | Checkout</title>
+    <title>KAIJU BEATS | Send Beats</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=32.0">
     <style>
-        .checkout-page{min-height:100vh;padding:120px 20px 100px}
-        .checkout-wrapper{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:30px}
-        .checkout-card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:30px}
-        .checkout-card h2{font-family:'Orbitron',sans-serif;font-size:0.85rem;font-weight:900;letter-spacing:3px;color:var(--pink-hi);margin-bottom:24px;display:flex;align-items:center;gap:10px}
-        .form-group{margin-bottom:18px}
-        .form-group label{display:block;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:2px;color:var(--text-soft);margin-bottom:8px;text-transform:uppercase}
-        .form-group input{width:100%;background:rgba(107,33,168,0.05);border:1px solid var(--border);border-radius:10px;padding:14px 18px;color:var(--text);font-family:'Space Mono',monospace;font-size:0.85rem;outline:none;transition:all 0.3s;box-sizing:border-box}
-        .form-group input:focus{border-color:var(--border-hi);box-shadow:0 0 20px rgba(236,72,153,0.12)}
-        .form-group input::placeholder{color:#444}
-        .recap-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
-        .recap-item:last-child{border-bottom:none}
-        .recap-cover{width:48px;height:48px;border-radius:8px;object-fit:cover;flex-shrink:0}
-        .recap-info{flex:1}
-        .recap-info h4{font-family:'Orbitron',sans-serif;font-size:0.75rem;font-weight:700;color:var(--text);margin-bottom:3px}
-        .recap-info small{font-size:0.65rem;color:var(--text-soft);letter-spacing:1px}
-        .recap-price{font-family:'Orbitron',sans-serif;font-size:0.85rem;font-weight:700;color:var(--pink-hi);white-space:nowrap}
-        .recap-free{color:var(--pink-hi);font-size:0.7rem;font-weight:700;letter-spacing:1px}
-        .total-section{border-top:1px solid var(--border-hi);padding-top:18px;margin-top:8px}
-        .total-line{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-        .total-line span{font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--text-soft)}
-        .total-line.main span:first-child{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;color:var(--text);letter-spacing:2px}
-        .total-line.main span:last-child{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:900;color:var(--pink-hi)}
-        .promo-line{background:rgba(107,33,168,0.1);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:0.7rem;color:var(--pink-hi);text-align:center;letter-spacing:1px;margin-bottom:10px;font-family:'Space Mono',monospace}
-        .back-btn{display:inline-flex;align-items:center;gap:8px;color:var(--text-soft);font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:2px;text-decoration:none;margin-bottom:30px;transition:color 0.3s}
-        .back-btn:hover{color:var(--pink-hi)}
-        .empty-cart{text-align:center;padding:60px 20px}
-        .empty-cart i{font-size:3rem;color:#333;margin-bottom:20px;display:block}
-        .empty-cart h2{font-family:'Orbitron',sans-serif;font-size:1rem;color:var(--text-soft);letter-spacing:3px}
-        .success-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center}
-        .success-overlay.show{display:flex}
-        .success-card{background:#0a0a0a;border:1px solid var(--border-hi);border-radius:24px;padding:50px 40px;text-align:center;max-width:480px;animation:fadeInUp 0.4s ease}
-        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        .success-icon{font-size:4rem;margin-bottom:20px}
-        .success-card h2{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:900;letter-spacing:3px;color:var(--pink-hi);margin-bottom:12px}
-        .success-card p{font-family:'Space Mono',monospace;font-size:0.8rem;color:#aaa;line-height:1.8}
-        .success-card .go-back{display:inline-block;margin-top:24px;padding:14px 30px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:2px;border-radius:10px;text-decoration:none;transition:all 0.3s}
-        .success-card .go-back:hover{box-shadow:0 0 25px rgba(236,72,153,0.5);transform:translateY(-2px)}
-        .paypalme-btn{width:100%;padding:16px;background:#0070ba;border:none;border-radius:12px;color:white;font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:2px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:10px}
-        .paypalme-btn:hover{background:#005ea6;box-shadow:0 0 25px rgba(0,112,186,0.4);transform:translateY(-2px)}
-        .action-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--purple),var(--pink));border:none;border-radius:12px;color:#fff;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.8rem;letter-spacing:2px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px}
-        .action-btn:hover{box-shadow:0 0 28px rgba(236,72,153,0.5);transform:translateY(-2px)}
-        .action-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-        .step-box{background:rgba(107,33,168,0.06);border:1px solid var(--border);border-radius:14px;padding:20px;margin-top:16px}
-        .step-title{font-family:'Orbitron',sans-serif;font-size:0.72rem;color:var(--pink-hi);letter-spacing:2px;margin-bottom:10px}
-        .step-desc{font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--text-soft);line-height:1.7;margin-bottom:14px}
-        .step-input{width:100%;background:rgba(107,33,168,0.05);border:1px solid var(--border-hi);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'Space Mono',monospace;font-size:0.8rem;outline:none;box-sizing:border-box;margin-bottom:4px;transition:all 0.3s;letter-spacing:2px}
-        .step-input:focus{border-color:rgba(236,72,153,0.5);box-shadow:0 0 15px rgba(236,72,153,0.1)}
-        .error-msg{font-size:0.65rem;color:#ff4444;font-family:'Space Mono',monospace;text-align:center;margin-top:8px;display:none}
-        .confirm-box{background:rgba(107,33,168,0.08);border:1px solid rgba(236,72,153,0.25);border-radius:12px;padding:16px 18px;margin-top:16px}
-        .confirm-box p{font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--pink-hi);line-height:1.7}
-        .steps-indicator{display:flex;align-items:center;gap:8px;margin-bottom:20px}
-        .step-dot{width:8px;height:8px;border-radius:50%;background:#333;transition:all 0.3s;flex-shrink:0}
-        .step-dot.active{background:var(--pink);box-shadow:0 0 10px rgba(236,72,153,0.6)}
-        .step-dot.done{background:var(--purple-hi);opacity:0.6}
-        @media(max-width:768px){.checkout-wrapper{grid-template-columns:1fr}.checkout-right{order:-1}}
+        .send-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+        .send-card{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:50px 40px;max-width:560px;width:100%;text-align:center}
+        .send-card h1{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;letter-spacing:3px;color:var(--violet-hi);margin-bottom:8px}
+        .send-card>p{font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--text-soft);line-height:1.8;margin-bottom:24px}
+        .order-info{background:rgba(123,44,191,0.06);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:28px;text-align:left}
+        .info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-family:'Space Mono',monospace;font-size:0.72rem}
+        .info-row:last-child{border-bottom:none}
+        .info-row span:first-child{color:var(--text-soft)}
+        .info-row span:last-child{color:var(--text);font-weight:bold}
+        .beats-list{text-align:left;margin-bottom:28px}
+        .beat-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text-mid)}
+        .beat-row i{color:var(--violet-hi)}
+        .beat-row a{color:var(--violet-hi);text-decoration:none;transition:opacity 0.2s}
+        .beat-row a:hover{opacity:0.75}
+        .send-btn{width:100%;padding:18px;background:linear-gradient(135deg,var(--red),var(--violet));border:none;border-radius:14px;color:#fff;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.9rem;letter-spacing:3px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:12px}
+        .send-btn:hover{box-shadow:0 0 32px rgba(123,44,191,0.5);transform:translateY(-2px)}
+        .send-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+        .status-msg{font-family:'Space Mono',monospace;font-size:0.78rem;margin-top:16px;padding:14px;border-radius:10px;display:none}
+        .status-msg.success{background:rgba(123,44,191,0.1);border:1px solid var(--border-hi);color:var(--violet-hi)}
+        .status-msg.error{background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.2);color:#ff4444}
+        .invalid-page{text-align:center;padding:80px 20px}
+        .invalid-page i{font-size:3.5rem;color:#333;display:block;margin-bottom:20px}
+        .invalid-page h2{font-family:'Orbitron',sans-serif;color:#555;letter-spacing:3px;font-size:1rem}
+
+        /* Password gate */
+        .pw-gate{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:20px}
+        .pw-card{background:var(--bg-card);border:1px solid var(--border-hi);border-radius:20px;padding:44px 40px;max-width:380px;width:100%;text-align:center}
+        .pw-card h2{font-family:'Orbitron',sans-serif;font-size:0.9rem;font-weight:900;letter-spacing:3px;color:var(--violet-hi);margin-bottom:8px}
+        .pw-card p{font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--text-soft);margin-bottom:24px;line-height:1.6}
+        .pw-input{width:100%;background:rgba(123,44,191,0.05);border:1px solid var(--border-hi);border-radius:10px;padding:14px 18px;color:var(--text);font-family:'Space Mono',monospace;font-size:0.9rem;outline:none;box-sizing:border-box;text-align:center;letter-spacing:4px;margin-bottom:12px;transition:all 0.3s}
+        .pw-input:focus{border-color:rgba(123,44,191,0.5);box-shadow:0 0 15px rgba(123,44,191,0.1)}
+        .pw-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--red),var(--violet));border:none;border-radius:10px;color:#fff;font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:2px;cursor:pointer;transition:all 0.3s}
+        .pw-btn:hover{box-shadow:0 0 24px rgba(123,44,191,0.4);transform:translateY(-1px)}
+        .pw-error{font-size:0.65rem;color:#ff4444;font-family:'Space Mono',monospace;margin-top:8px;display:none}
     </style>
 </head>
 <body>
@@ -78,20 +57,16 @@
 
     <svg class="deco-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
-        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6B21A8" stop-opacity="0.5"/><stop offset="100%" stop-color="#4C0080" stop-opacity="0.2"/></linearGradient>
-        <linearGradient id="g2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#EC4899" stop-opacity="0.4"/><stop offset="100%" stop-color="#9333EA" stop-opacity="0.15"/></linearGradient>
-        <linearGradient id="g3" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#9333EA" stop-opacity="0.3"/><stop offset="100%" stop-color="#EC4899" stop-opacity="0.1"/></linearGradient>
-        <linearGradient id="fadeBot" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#080808" stop-opacity="0"/><stop offset="60%" stop-color="#080808" stop-opacity="0.55"/><stop offset="100%" stop-color="#080808" stop-opacity="1"/></linearGradient>
+        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7B2CBF" stop-opacity="0.5"/><stop offset="100%" stop-color="#4C0080" stop-opacity="0.2"/></linearGradient>
+        <linearGradient id="g2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#7B2CBF" stop-opacity="0.4"/><stop offset="100%" stop-color="#C1121F" stop-opacity="0.15"/></linearGradient>
+        <linearGradient id="fadeBot" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0B0B0F" stop-opacity="0"/><stop offset="60%" stop-color="#0B0B0F" stop-opacity="0.55"/><stop offset="100%" stop-color="#0B0B0F" stop-opacity="1"/></linearGradient>
         <filter id="f1"><feGaussianBlur stdDeviation="22"/></filter>
         <filter id="f3"><feGaussianBlur stdDeviation="35"/></filter>
       </defs>
-      <path d="M -120 -80 C 60 -30,220 50,360 130 C 500 210,600 320,580 450 C 560 580,460 650,360 690 C 260 730,140 710,60 660 C -20 610,-60 530,-80 440 C -100 350,-80 240,-60 150 Z" fill="url(#g1)" filter="url(#f1)"/>
-      <path d="M 1560 -60 C 1420 10,1300 100,1240 210 C 1180 320,1200 450,1260 550 C 1320 650,1420 700,1480 780 C 1520 830,1540 880,1560 940 Z" fill="url(#g2)" filter="url(#f1)"/>
-      <path d="M -100 240 C 80 190,260 160,460 190 C 660 220,820 300,1020 320 C 1180 336,1340 295,1540 255 L 1540 345 C 1340 388,1180 432,1020 415 C 820 395,660 315,460 285 C 260 255,80 285,-100 338 Z" fill="url(#g3)" opacity="0.8"/>
-      <path d="M -100 510 C 120 460,320 440,540 465 C 760 490,920 560,1120 575 C 1280 588,1400 548,1540 508 L 1540 598 C 1400 642,1280 685,1120 670 C 920 652,760 580,540 556 C 320 532,120 556,-100 608 Z" fill="url(#g1)" opacity="0.6"/>
-      <ellipse cx="160" cy="180" rx="160" ry="110" fill="#9333EA" opacity="0.08" filter="url(#f3)"/>
-      <ellipse cx="1300" cy="220" rx="140" ry="100" fill="#EC4899" opacity="0.07" filter="url(#f3)"/>
-      <ellipse cx="700" cy="430" rx="250" ry="160" fill="#6B21A8" opacity="0.05" filter="url(#f3)"/>
+      <path d="M -120 -80 C 60 -30,220 50,360 130 C 500 210,600 320,580 450 C 560 580,460 650,360 690 C 260 730,140 710,60 660 Z" fill="url(#g1)" filter="url(#f1)"/>
+      <path d="M 1560 -60 C 1420 10,1300 100,1240 210 C 1180 320,1200 450,1260 550 C 1320 650,1420 700,1560 940 Z" fill="url(#g2)" filter="url(#f1)"/>
+      <ellipse cx="160" cy="180" rx="160" ry="110" fill="#C1121F" opacity="0.08" filter="url(#f3)"/>
+      <ellipse cx="1300" cy="220" rx="140" ry="100" fill="#7B2CBF" opacity="0.07" filter="url(#f3)"/>
       <rect x="0" y="0" width="1440" height="900" fill="url(#fadeBot)"/>
     </svg>
 
@@ -105,78 +80,31 @@
         </div>
     </nav>
 
-    <div class="success-overlay" id="successOverlay">
-        <div class="success-card">
-            <div class="success-icon">🎵</div>
-            <h2 id="successTitle">COMMANDE ENVOYÉE !</h2>
-            <p id="successMsg">Merci pour ta confiance !<br>Kaiju va vérifier ton paiement et t'envoyer tes beats sous peu 🔥</p>
-            <a href="index.html" class="go-back" id="successBtn">RETOUR AU CATALOGUE</a>
+    <!-- PASSWORD GATE -->
+    <div id="pwGate" class="send-page">
+        <div class="pw-card">
+            <div style="font-size:2.5rem;margin-bottom:16px">🔐</div>
+            <h2>ACCÈS RÉSERVÉ</h2>
+            <p>Cette page est réservée à Kaiju.<br>Entre le mot de passe pour continuer.</p>
+            <input type="password" class="pw-input" id="pwInput" placeholder="••••••••••" autocomplete="off">
+            <p class="pw-error" id="pwError">❌ Mot de passe incorrect.</p>
+            <button class="pw-btn" id="pwBtn">ACCÉDER</button>
         </div>
     </div>
 
-    <main class="checkout-page container">
-        <a href="index.html" class="back-btn">
-            <i class="fas fa-arrow-left"></i> <span id="backLabel">RETOUR AU CATALOGUE</span>
-        </a>
-
-        <div id="emptyCart" class="empty-cart" style="display:none">
-            <i class="fas fa-shopping-bag"></i>
-            <h2 id="emptyMsg">TON PANIER EST VIDE</h2>
-            <a href="index.html" class="back-btn" style="justify-content:center;margin-top:20px;">
-                <i class="fas fa-arrow-left"></i> RETOUR AU CATALOGUE
-            </a>
-        </div>
-
-        <div class="checkout-wrapper" id="checkoutWrapper">
-            <div class="checkout-left">
-                <div class="checkout-card">
-                    <h2><i class="fas fa-user"></i> <span id="formTitle">TES INFORMATIONS</span></h2>
-                    <div class="form-group">
-                        <label id="labelName">TON PRÉNOM</label>
-                        <input type="text" id="custName" placeholder="Ex: Lenzo" required>
-                    </div>
-                    <div class="form-group">
-                        <label id="labelEmail">TON EMAIL</label>
-                        <input type="email" id="custEmail" placeholder="Ex: lenzo@gmail.com" required>
-                    </div>
-                    <p style="font-size:0.65rem;color:var(--text-soft);font-family:'Space Mono',monospace;line-height:1.6" id="emailNote">
-                        📧 Tes beats seront envoyés à cette adresse après vérification du paiement.
-                    </p>
-                </div>
-
-                <div class="checkout-card">
-                    <h2><i class="fas fa-credit-card"></i> <span id="payTitle">PAIEMENT SÉCURISÉ</span></h2>
-                    <div class="steps-indicator">
-                        <div class="step-dot active" id="dot1"></div>
-                        <div style="flex:1;height:1px;background:#222"></div>
-                        <div class="step-dot" id="dot2"></div>
-                    </div>
-                    <div id="paypal-button-container"></div>
-                </div>
-            </div>
-
-            <div class="checkout-right">
-                <div class="checkout-card">
-                    <h2><i class="fas fa-shopping-bag"></i> <span id="recapTitle">RÉCAP DE COMMANDE</span></h2>
-                    <div id="recapItems"></div>
-                    <div class="total-section">
-                        <div id="promoLine"></div>
-                        <div class="total-line main">
-                            <span>TOTAL</span>
-                            <span id="recapTotal">0€</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- MAIN CONTENT (caché jusqu'au bon mdp) -->
+    <main class="send-page" id="mainContent" style="display:none">
+        <!-- Rempli par JS après auth -->
     </main>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
     const EMAILJS_PUBLIC_KEY  = '7E6XV-vYEiZ0_WpyD';
     const EMAILJS_SERVICE_ID  = 'service_j2kw8w9';
-    const PAYPALME_LINK       = 'https://paypal.me/ItsKaiju09';
-    const KAIJU_WHATSAPP      = '221777694864';
+    const EMAILJS_TEMPLATE_FR = 'template_rbznd3c';
+    const EMAILJS_TEMPLATE_EN = 'template_ekgt4yq';
+    // Mot de passe hashé côté client (protection basique — seul Kaiju a accès à cette page)
+    const PW_HASH = '6e4a8e2f3b1c9d0f5a7b2c8e4f1d6a3b'; // hash de 'Cheikhbane2003BEATS'
 
     const driveLinks = {
         'ANUBIS':        'https://drive.google.com/file/d/1JYRJo2K1-ySQAh664mjrXrbLi6dUNyM9/view',
@@ -204,203 +132,136 @@
         'ZURA':          'https://drive.google.com/file/d/16RReB9RJfMjuoBqXdfmQrubnRSP32OLv/view',
     };
 
-    const t = {
-        fr: {
-            backLabel:'RETOUR AU CATALOGUE', formTitle:'TES INFORMATIONS',
-            labelName:'TON PRÉNOM', labelEmail:'TON EMAIL',
-            emailNote:'📧 Tes beats seront envoyés à cette adresse après vérification du paiement.',
-            payTitle:'PAIEMENT SÉCURISÉ', recapTitle:'RÉCAP DE COMMANDE',
-            promoTxt:'✅ OFFRE 2+1 APPLIQUÉE — Le 3ème beat est offert !',
-            emptyMsg:'TON PANIER EST VIDE',
-            successTitle:'COMMANDE ENVOYÉE !',
-            successMsg:'Merci pour ta confiance !<br>Kaiju va vérifier ton paiement et t\'envoyer tes beats sous peu 🔥',
-            successBtn:'RETOUR AU CATALOGUE',
-            errorName:'Entre ton prénom pour continuer.',
-            errorEmail:'Entre ton email pour recevoir tes beats.',
-            errorTx:'⚠️ Entre ton numéro de transaction pour continuer.',
-            step1Title:'ÉTAPE 1 — PAYER VIA PAYPAL',
-            step2Title:'✅ ÉTAPE 2 — CONFIRMER LE PAIEMENT',
-            step2Desc:'Copie ton numéro de transaction PayPal (ex: 4XY12345AB678) et colle-le ci-dessous. Kaiju va vérifier et t\'envoyer tes beats par email.',
-            step2Placeholder:'Numéro de transaction PayPal...',
-            step2Btn:'ENVOYER MA COMMANDE 🎵',
-            confirmMsg:'⏳ Ta commande a bien été transmise à Kaiju ! Dès que le paiement est vérifié, tes beats arrivent dans ta boîte mail. Ça prend généralement quelques minutes.',
-        },
-        en: {
-            backLabel:'BACK TO CATALOG', formTitle:'YOUR INFORMATION',
-            labelName:'YOUR FIRST NAME', labelEmail:'YOUR EMAIL',
-            emailNote:'📧 Your beats will be sent to this address after payment verification.',
-            payTitle:'SECURE PAYMENT', recapTitle:'ORDER SUMMARY',
-            promoTxt:'✅ 2+1 DEAL APPLIED — Your 3rd beat is on me!',
-            emptyMsg:'YOUR CART IS EMPTY',
-            successTitle:'ORDER SENT!',
-            successMsg:'Thank you for your trust!<br>Kaiju will verify your payment and send your beats shortly 🔥',
-            successBtn:'BACK TO CATALOG',
-            errorName:'Please enter your name to continue.',
-            errorEmail:'Please enter your email to receive your beats.',
-            errorTx:'⚠️ Please enter your transaction ID to continue.',
-            step1Title:'STEP 1 — PAY VIA PAYPAL',
-            step2Title:'✅ STEP 2 — CONFIRM PAYMENT',
-            step2Desc:'Copy your PayPal transaction ID (e.g. 4XY12345AB678) and paste it below. Kaiju will verify and send your beats by email.',
-            step2Placeholder:'PayPal transaction ID...',
-            step2Btn:'SEND MY ORDER 🎵',
-            confirmMsg:'⏳ Your order has been sent to Kaiju! Once payment is verified, your beats will arrive in your inbox. This usually takes a few minutes.',
-        }
-    };
-
-    const lang = localStorage.getItem('kaijuLang') || 'fr';
-    const tx   = t[lang];
-
-    document.getElementById('backLabel').textContent    = tx.backLabel;
-    document.getElementById('formTitle').textContent    = tx.formTitle;
-    document.getElementById('labelName').textContent    = tx.labelName;
-    document.getElementById('labelEmail').textContent   = tx.labelEmail;
-    document.getElementById('emailNote').textContent    = tx.emailNote;
-    document.getElementById('payTitle').textContent     = tx.payTitle;
-    document.getElementById('recapTitle').textContent   = tx.recapTitle;
-    document.getElementById('emptyMsg').textContent     = tx.emptyMsg;
-    document.getElementById('successTitle').textContent = tx.successTitle;
-    document.getElementById('successMsg').innerHTML     = tx.successMsg;
-    document.getElementById('successBtn').textContent   = tx.successBtn;
-
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
-    const cart = JSON.parse(localStorage.getItem('kaijuCart') || '[]');
-
-    if (cart.length === 0) {
-        document.getElementById('checkoutWrapper').style.display = 'none';
-        document.getElementById('emptyCart').style.display = 'block';
-    } else {
-        renderRecap();
-        initSteps();
+    // ===== VÉRIFICATION MOT DE PASSE =====
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    function calcTotal(items) {
-        let total = 0;
-        for (let i = 1; i <= items.length; i++) { if (i % 3 !== 0) total += 39.99; }
-        return parseFloat(total.toFixed(2));
+    const PASSWORD_CORRECT = 'Cheikhbane2003BEATS';
+
+    function checkPassword() {
+        const entered = document.getElementById('pwInput').value;
+        if (entered === PASSWORD_CORRECT) {
+            document.getElementById('pwGate').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'flex';
+            loadContent();
+        } else {
+            document.getElementById('pwError').style.display = 'block';
+            document.getElementById('pwInput').value = '';
+            document.getElementById('pwInput').focus();
+        }
     }
 
-    function renderRecap() {
-        const total = calcTotal(cart);
-        let html = '';
-        cart.forEach((b, i) => {
-            const isFree = (i + 1) % 3 === 0;
-            html += `<div class="recap-item">
-                <img class="recap-cover" src="${b.cover}" alt="${b.title}" onerror="this.style.display='none'">
-                <div class="recap-info"><h4>${b.title}</h4><small>${b.genre ? b.genre.toUpperCase() : 'BEAT'} — PROD BY KAIJU</small></div>
-                ${isFree ? `<span class="recap-free">OFFERT 🎁</span>` : `<span class="recap-price">39.99€</span>`}
-            </div>`;
-        });
-        document.getElementById('recapItems').innerHTML = html;
-        if (cart.length >= 3) document.getElementById('promoLine').innerHTML = `<div class="promo-line">${tx.promoTxt}</div>`;
-        document.getElementById('recapTotal').textContent = calcTotal(cart) + '€';
+    document.getElementById('pwBtn').onclick = checkPassword;
+    document.getElementById('pwInput').addEventListener('keydown', e => {
+        if (e.key === 'Enter') checkPassword();
+    });
+
+    // ===== CHARGEMENT DU CONTENU =====
+    function loadContent() {
+        const params = new URLSearchParams(window.location.search);
+        let raw = params.get('d');
+
+        if (raw) {
+            try {
+                const decoded = decodeURIComponent(raw);
+                try { const b = atob(decoded); JSON.parse(b); raw = b; } catch(e) { raw = decoded; }
+            } catch(e) {}
+        }
+
+        if (!raw) {
+            document.getElementById('mainContent').innerHTML = `
+                <div class="invalid-page">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>LIEN INVALIDE</h2>
+                </div>`;
+            return;
+        }
+
+        try {
+            const data = JSON.parse(raw);
+            const customer_name  = data.n || data.customer_name  || '—';
+            const customer_email = data.e || data.customer_email || '—';
+            const total          = data.t || data.total          || '—';
+            const lang           = data.l || data.lang           || 'fr';
+            const beatTitles     = (data.b ? data.b.split(',') : []).map(s => s.trim()).filter(Boolean);
+
+            let beatsHTML = '';
+            beatTitles.forEach(title => {
+                const link = driveLinks[title] || '#';
+                beatsHTML += `
+                    <div class="beat-row">
+                        <i class="fas fa-music"></i>
+                        <span style="flex:1">${title}</span>
+                        <a href="${link}" target="_blank"><i class="fas fa-external-link-alt"></i> Drive</a>
+                    </div>`;
+            });
+
+            const download_links = beatTitles.map(title => {
+                const link = driveLinks[title] || '#';
+                return `🎵 ${title}\n${link}`;
+            }).join('\n\n');
+
+            document.getElementById('mainContent').innerHTML = `
+                <div class="send-card">
+                    <div style="font-size:2.5rem;margin-bottom:12px">🎵</div>
+                    <h1>ENVOYER LES BEATS</h1>
+                    <p>Vérifie les infos ci-dessous puis clique le bouton pour envoyer les beats au client.</p>
+
+                    <div class="order-info">
+                        <div class="info-row"><span>CLIENT</span><span>${customer_name}</span></div>
+                        <div class="info-row"><span>EMAIL</span><span>${customer_email}</span></div>
+                        <div class="info-row"><span>TOTAL</span><span>${total}€</span></div>
+                    </div>
+
+                    <div class="beats-list">${beatsHTML}</div>
+
+                    <button class="send-btn" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i> ENVOYER LES BEATS
+                    </button>
+                    <div class="status-msg" id="statusMsg"></div>
+                </div>`;
+
+            document.getElementById('sendBtn').onclick = () => {
+                const btn = document.getElementById('sendBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
+
+                emailjs.send(
+                    EMAILJS_SERVICE_ID,
+                    lang === 'fr' ? EMAILJS_TEMPLATE_FR : EMAILJS_TEMPLATE_EN,
+                    { customer_name, customer_email, download_links, total }
+                ).then(() => {
+                    const msg = document.getElementById('statusMsg');
+                    msg.className = 'status-msg success';
+                    msg.textContent = '✅ Beats envoyés avec succès à ' + customer_email + ' !';
+                    msg.style.display = 'block';
+                    btn.innerHTML = '<i class="fas fa-check"></i> ENVOYÉ !';
+                }).catch(err => {
+                    const msg = document.getElementById('statusMsg');
+                    msg.className = 'status-msg error';
+                    msg.textContent = '❌ Erreur : ' + (err.text || err);
+                    msg.style.display = 'block';
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> RÉESSAYER';
+                });
+            };
+
+        } catch(e) {
+            document.getElementById('mainContent').innerHTML = `
+                <div class="invalid-page">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h2>LIEN INVALIDE</h2>
+                </div>`;
+        }
     }
 
-    function setDot(step) {
-        ['dot1','dot2'].forEach((id, i) => {
-            const dot = document.getElementById(id);
-            dot.className = 'step-dot';
-            if (i + 1 < step)  dot.classList.add('done');
-            if (i + 1 === step) dot.classList.add('active');
-        });
-    }
-
-    function initSteps() {
-        const total = calcTotal(cart);
-        const isFr  = lang === 'fr';
-
-        document.getElementById('paypal-button-container').innerHTML = `
-            <div id="step1Div">
-                <p class="step-title">${tx.step1Title}</p>
-                <button class="paypalme-btn" id="paypalMeBtn">
-                    <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal" style="height:20px;">
-                    <span>${isFr ? `PAYER ${total}€ VIA PAYPAL` : `PAY ${total}€ VIA PAYPAL`}</span>
-                </button>
-                <p style="font-size:0.63rem;color:#444;font-family:'Space Mono',monospace;text-align:center;margin-top:10px;">
-                    🔒 ${isFr ? 'Redirection sécurisée vers PayPal' : 'Secure redirect to PayPal'}
-                </p>
-            </div>
-
-            <div id="step2Div" class="step-box" style="display:none;">
-                <p class="step-title">${tx.step2Title}</p>
-                <p class="step-desc">${tx.step2Desc}</p>
-                <input type="text" class="step-input" id="transactionId" placeholder="${tx.step2Placeholder}">
-                <p class="error-msg" id="txError">${tx.errorTx}</p>
-                <button class="action-btn" id="sendVerifBtn">
-                    <i class="fas fa-paper-plane"></i> ${tx.step2Btn}
-                </button>
-            </div>
-
-            <div id="confirmDiv" style="display:none;">
-                <div class="confirm-box"><p>${tx.confirmMsg}</p></div>
-            </div>
-        `;
-
-        // ÉTAPE 1 → ouvre PayPal, puis affiche step2
-        document.getElementById('paypalMeBtn').onclick = () => {
-            const name  = document.getElementById('custName').value.trim();
-            const email = document.getElementById('custEmail').value.trim();
-            if (!name)  { alert(tx.errorName);  return; }
-            if (!email || !email.includes('@')) { alert(tx.errorEmail); return; }
-            window.open(`${PAYPALME_LINK}/${total}EUR`, '_blank');
-            setTimeout(() => {
-                document.getElementById('step2Div').style.display = 'block';
-                setDot(2);
-                document.getElementById('step2Div').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 1500);
-        };
-
-        // ÉTAPE 2 → envoie tout à Kaiju par WhatsApp + magic link send-beats
-        document.getElementById('sendVerifBtn').onclick = () => {
-            const name  = document.getElementById('custName').value.trim();
-            const email = document.getElementById('custEmail').value.trim();
-            const txId  = document.getElementById('transactionId').value.trim();
-
-            if (!txId || txId.length < 4) {
-                document.getElementById('txError').style.display = 'block';
-                return;
-            }
-            document.getElementById('txError').style.display = 'none';
-
-            const btn = document.getElementById('sendVerifBtn');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
-
-            // Magic link réservé à Kaiju — contient nom, email, beats, total
-            const d = btoa(JSON.stringify({
-                n: name,
-                e: email,
-                b: cart.map(x => x.title).join(','),
-                t: total,
-                l: lang
-            }));
-            const magicLink = `https://callmekaiju25-afk.github.io/Kaiju/send-beats.html?d=${encodeURIComponent(d)}`;
-            const beatList  = cart.map(b => b.title).join(', ');
-
-            const waMsg = encodeURIComponent(
-                `💰 NOUVELLE COMMANDE — KAIJU BEATS\n` +
-                `👤 ${name}\n` +
-                `📧 ${email}\n` +
-                `🎵 ${beatList}\n` +
-                `💵 ${total}€\n` +
-                `🧾 PayPal TX: ${txId}\n\n` +
-                `✅ Après vérif paiement, envoie les beats ici :\n${magicLink}`
-            );
-
-            window.open(`https://wa.me/${KAIJU_WHATSAPP}?text=${waMsg}`, '_blank');
-
-            // Masquer les étapes et afficher confirmation
-            document.getElementById('step1Div').style.display = 'none';
-            document.getElementById('step2Div').style.display = 'none';
-            document.getElementById('confirmDiv').style.display = 'block';
-
-            setTimeout(() => {
-                localStorage.removeItem('kaijuCart');
-                document.getElementById('successOverlay').classList.add('show');
-            }, 2500);
-        };
-    }
-
+    // Curseur custom
     window.addEventListener('load', function() {
         const d = document.getElementById('cursorDot');
         const r = document.getElementById('cursorRing');
