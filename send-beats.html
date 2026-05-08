@@ -274,6 +274,36 @@
             el.addEventListener('mouseleave', () => { d.classList.remove('hovering'); r.classList.remove('hovering'); });
         });
     });
+    
+    // ===== CURSEUR =====
+    (function() {
+        var dot  = document.getElementById('cursorDot');
+        var ring = document.getElementById('cursorRing');
+        if (!dot || !ring) return;
+        var mx=0, my=0, rx=0, ry=0;
+        document.addEventListener('mousemove', function(e) {
+            mx = e.clientX; my = e.clientY;
+            dot.style.left = mx + 'px';
+            dot.style.top  = my + 'px';
+            dot.style.opacity  = '1';
+            ring.style.opacity = '1';
+        });
+        (function loop() {
+            rx += (mx - rx) * 0.1;
+            ry += (my - ry) * 0.1;
+            ring.style.left = rx + 'px';
+            ring.style.top  = ry + 'px';
+            requestAnimationFrame(loop);
+        })();
+        document.addEventListener('mousedown', function() { dot.classList.add('clicking'); ring.classList.add('clicking'); });
+        document.addEventListener('mouseup',   function() { dot.classList.remove('clicking'); ring.classList.remove('clicking'); });
+        function addHover(el) {
+            el.addEventListener('mouseenter', function() { dot.classList.add('hovering');    ring.classList.add('hovering'); });
+            el.addEventListener('mouseleave', function() { dot.classList.remove('hovering'); ring.classList.remove('hovering'); });
+        }
+        document.querySelectorAll('button, a, input').forEach(addHover);
+    })();
+
     </script>
 </body>
 </html>

@@ -67,6 +67,7 @@ const translations = {
 };
 
 let currentLang = localStorage.getItem('kaijuLang') || 'fr';
+let currentGenre = 'all'; // tracks selected genre filter
 
 const readmeContent = {
     fr:`<div class="readme-warn">⚠️</div><h2>ATTENTION – CONDITIONS D'UTILISATION</h2>
@@ -83,92 +84,39 @@ const readmeContent = {
         <div class="readme-important"><p><strong>Important:</strong> Credit <span class="highlight">"prod. Kaiju"</span> and include the beat link in the video description.</p></div>`
 };
 
-// ==================== CURSOR PREMIUM ====================
-// Déclaration globale pour que les fonctions cursor soient accessibles partout
-let _cursorDot, _cursorRing, _cmx=0, _cmy=0, _crx=0, _cry=0;
-
-function _initCursor() {
-    _cursorDot  = document.getElementById('cursorDot');
-    _cursorRing = document.getElementById('cursorRing');
-    if (!_cursorDot || !_cursorRing) return;
-
-    // Rendre visible dès le premier move
-    document.addEventListener('mousemove', e => {
-        _cmx = e.clientX; _cmy = e.clientY;
-        _cursorDot.style.left = _cmx + 'px';
-        _cursorDot.style.top  = _cmy + 'px';
-        _cursorDot.style.opacity = '1';
-        _cursorRing.style.opacity = '1';
-    });
-
-    // Ring avec lag fluide
-    (function _animRing() {
-        _crx += (_cmx - _crx) * 0.1;
-        _cry += (_cmy - _cry) * 0.1;
-        _cursorRing.style.left = _crx + 'px';
-        _cursorRing.style.top  = _cry + 'px';
-        requestAnimationFrame(_animRing);
-    })();
-
-    // Click
-    document.addEventListener('mousedown', () => {
-        _cursorDot.classList.add('clicking');
-        _cursorRing.classList.add('clicking');
-        createClickRipple(_cmx, _cmy);
-    });
-    document.addEventListener('mouseup', () => {
-        _cursorDot.classList.remove('clicking');
-        _cursorRing.classList.remove('clicking');
-    });
-
-    _bindCursorHover();
-
-    // Observer cartes dynamiques
-    new MutationObserver(() => {
-        document.querySelectorAll('.beat-card:not([data-cursor])').forEach(card => {
-            card.setAttribute('data-cursor', '1');
-            _addCursorHover(card);
+// ==================== CURSOR ====================
+(function() {
+    var dot, ring, mx=0, my=0, rx=0, ry=0;
+    function init() {
+        dot  = document.getElementById('cursorDot');
+        ring = document.getElementById('cursorRing');
+        if (!dot || !ring) return;
+        document.addEventListener('mousemove', function(e) {
+            mx = e.clientX; my = e.clientY;
+            dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+            dot.style.opacity = '1'; ring.style.opacity = '1';
         });
-    }).observe(document.getElementById('beatsGrid') || document.body, { childList:true, subtree:true });
-}
-
-function _addCursorHover(el) {
-    el.addEventListener('mouseenter', () => {
-        _cursorDot  && _cursorDot.classList.add('hovering');
-        _cursorRing && _cursorRing.classList.add('hovering');
-    });
-    el.addEventListener('mouseleave', () => {
-        _cursorDot  && _cursorDot.classList.remove('hovering');
-        _cursorRing && _cursorRing.classList.remove('hovering');
-    });
-}
-
-function _bindCursorHover() {
-    document.querySelectorAll('button, a, input, .lang-btn, .beat-card, .custom-select-item').forEach(_addCursorHover);
-}
-
-// Init dès que le DOM est prêt (pas besoin d'attendre load)
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', _initCursor);
-} else {
-    _initCursor();
-}
-
-// Ripple visuel au clic
-function createClickRipple(x, y) {
-    const r = document.createElement('div');
-    r.style.cssText = `
-        position:fixed; left:${x}px; top:${y}px; width:6px; height:6px;
-        border-radius:50%; border:1px solid rgba(193,18,31,0.8);
-        transform:translate(-50%,-50%) scale(1); pointer-events:none; z-index:999997;
-        animation:click-ripple .5s ease-out forwards;
-    `;
-    document.head.insertAdjacentHTML('beforeend',
-        `<style>@keyframes click-ripple{to{transform:translate(-50%,-50%) scale(5);opacity:0}}</style>`
-    );
-    document.body.appendChild(r);
-    setTimeout(() => r.remove(), 500);
-}
+        (function loop() {
+            rx += (mx-rx)*0.1; ry += (my-ry)*0.1;
+            ring.style.left = rx+'px'; ring.style.top = ry+'px';
+            requestAnimationFrame(loop);
+        })();
+        document.addEventListener('mousedown', function() { dot.classList.add('clicking'); ring.classList.add('clicking'); });
+        document.addEventListener('mouseup',   function() { dot.classList.remove('clicking'); ring.classList.remove('clicking'); });
+        function addHover(el) {
+            el.addEventListener('mouseenter', function() { dot.classList.add('hovering');    ring.classList.add('hovering'); });
+            el.addEventListener('mouseleave', function() { dot.classList.remove('hovering'); ring.classList.remove('hovering'); });
+        }
+        document.querySelectorAll('button,a,input,.lang-btn,.beat-card,.custom-select-item').forEach(addHover);
+        // Observer pour cartes dynamiques
+        new MutationObserver(function() {
+            document.querySelectorAll('.beat-card:not([data-c])').forEach(function(card) {
+                card.setAttribute('data-c','1'); addHover(card);
+            });
+        }).observe(document.getElementById('beatsGrid') || document.body, {childList:true,subtree:true});
+    }
+    document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
+})();
 
 // ==================== TOAST NOTIFICATIONS ====================
 function showToast(msg, type = 'success') {
@@ -218,11 +166,21 @@ function applyTranslations(lang) {
     document.querySelector('.promo-bar span') && (document.querySelector('.promo-bar span').textContent = t.promoBar);
     document.getElementById('shuffleBtnLabel') && (document.getElementById('shuffleBtnLabel').textContent = t.shuffleLabel);
     document.getElementById('testimonialsSubtitle') && (document.getElementById('testimonialsSubtitle').textContent = t.testimonialsSubtitle);
+    // Mettre à jour le label du filtre genre si "all" est sélectionné
+    if (currentGenre === 'all') {
+        const lbl = document.getElementById('customSelectLabel');
+        if (lbl) lbl.textContent = t.allStyles;
+        const allItem = document.querySelector('.custom-select-item[data-value="all"]');
+        if (allItem) allItem.textContent = t.allStyles;
+    }
     render();
 }
 
 // ==================== AUDIO ====================
-let cart = JSON.parse(localStorage.getItem('kaijuCart') || '[]');
+let cart = (() => {
+    try { return JSON.parse(localStorage.getItem('kaijuCart') || '[]') || []; }
+    catch(e) { localStorage.removeItem('kaijuCart'); return []; }
+})();
 const mainAudio  = document.getElementById('mainAudio');
 const pBtn       = document.getElementById('pPlayPause');
 const progressBar = document.getElementById('pProgress');
@@ -445,10 +403,9 @@ document.addEventListener('keydown', e => {
 // ==================== FILTERS ====================
 function runFilters() {
     const s = document.getElementById('searchInput').value.toLowerCase().trim();
-    const g = document.getElementById('genreFilter').value;
     const filtered = database.filter(b =>
         b.title.toLowerCase().includes(s) &&
-        (g === 'all' || b.genre === g)
+        (currentGenre === 'all' || b.genre === currentGenre)
     );
     render(filtered);
 }
@@ -468,7 +425,7 @@ function runFilters() {
             items.forEach(i => i.classList.remove('active'));
             item.classList.add('active');
             label.textContent = item.textContent;
-            hidden.value = item.dataset.value;
+            currentGenre = item.dataset.value; // use global, not broken hidden select
             select.classList.remove('open');
             runFilters();
             if (shuffleMode) { buildShuffleQueue(); playShuffle(0); }
@@ -492,9 +449,8 @@ function fisherYates(arr) {
 }
 
 function buildShuffleQueue(currentId=null) {
-    const g = document.getElementById('genreFilter').value;
     const s = document.getElementById('searchInput').value.toLowerCase();
-    const pool = database.filter(b => b.title.toLowerCase().includes(s) && (g==='all'||b.genre===g));
+    const pool = database.filter(b => b.title.toLowerCase().includes(s) && (currentGenre==='all'||b.genre===currentGenre));
     let arr = fisherYates([...pool]);
     if (currentId && arr.length>1 && arr[0].id===currentId) arr.push(arr.shift());
     shuffleQueue = arr;
@@ -555,6 +511,7 @@ function render(data = database) {
             : data.map((b, idx) => `
             <div class="beat-card" data-id="${b.id}" style="animation-delay:${idx*40}ms">
                 <div class="card-shine"></div>
+                <div class="now-playing-tag"><div class="np-dot"></div> PLAYING</div>
                 <div class="img-box">
                     <img src="${b.cover}" loading="lazy" alt="${b.title}" onerror="this.src='assets/IMAGE/default.png'">
                     <div class="overlay-play">
@@ -611,8 +568,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCart();
     updateSliderGradient(document.getElementById('volControl'), 100);
 
-    document.getElementById('searchInput').addEventListener('input', runFilters);
-    document.getElementById('genreFilter').addEventListener('change', runFilters);
+    // genreFilter hidden select no longer used - using currentGenre global
 
     // Recherche live avec debounce
     let searchTimeout;

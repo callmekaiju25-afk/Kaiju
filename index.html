@@ -373,7 +373,21 @@ window.addEventListener('load', () => {
     }, 1900);
 });
 
-// counter removed
+// Version guard - vide le panier si version obsolète
+(function() {
+    const SITE_VERSION = 'v3.3';
+    try {
+        if (localStorage.getItem('kaijuVersion') !== SITE_VERSION) {
+            localStorage.removeItem('kaijuCart');
+            localStorage.setItem('kaijuVersion', SITE_VERSION);
+        }
+        const saved = JSON.parse(localStorage.getItem('kaijuCart') || '[]');
+        if (!Array.isArray(saved)) localStorage.removeItem('kaijuCart');
+    } catch(e) { localStorage.removeItem('kaijuCart'); }
+})();
+
+// Clear stale cart data from dev/testing sessions if needed
+// (users can clear manually via localStorage.removeItem('kaijuCart') in console)
 
 // CATALOG COUNT live update
 setInterval(() => {
