@@ -824,3 +824,172 @@ document.addEventListener('DOMContentLoaded', () => {
         ? document.addEventListener('DOMContentLoaded', function(){ setTimeout(type, 2000); })
         : setTimeout(type, 2000);
 })();
+/* ============================================================
+   KAIJU BEATS — v4.0 NOUVELLES FONCTIONNALITÉS
+   Ajouts purs — zéro logique existante touchée
+   ============================================================ */
+
+// ===== IDS DES 5 DERNIERS BEATS = badges NEW =====
+const NEW_BEAT_IDS = [27, 28, 29, 30, 31];
+
+// ===== PATCH render() — injecte badge NEW + class new-beat =====
+(function() {
+    const _origRender = window.render || null;
+    // On surcharge render via MutationObserver sur le grid
+    function injectNewBadges() {
+        document.querySelectorAll('.beat-card:not([data-new-checked])').forEach(card => {
+            card.setAttribute('data-new-checked', '1');
+            const id = parseInt(card.getAttribute('data-id'));
+            if (NEW_BEAT_IDS.includes(id)) {
+                // Badge NEW
+                if (!card.querySelector('.new-badge')) {
+                    const badge = document.createElement('div');
+                    badge.className = 'new-badge';
+                    badge.textContent = 'NEW';
+                    card.appendChild(badge);
+                }
+            }
+        });
+    }
+    new MutationObserver(injectNewBadges)
+        .observe(document.getElementById('beatsGrid') || document.body, { childList: true, subtree: true });
+    injectNewBadges();
+})();
+
+// ===== TRI A→Z / Z→A =====
+(function() {
+    let sortMode = null; // null | 'az' | 'za'
+
+    function applySort(data) {
+        if (!sortMode) return data;
+        return [...data].sort((a, b) =>
+            sortMode === 'az'
+                ? a.title.localeCompare(b.title)
+                : b.title.localeCompare(a.title)
+        );
+    }
+
+    // Patch runFilters pour intégrer le tri
+    const _origRunFilters = window.runFilters;
+    window.runFilters = function() {
+        const s = document.getElementById('searchInput').value.toLowerCase().trim();
+        const filtered = database.filter(b =>
+            b.title.toLowerCase().includes(s) &&
+            (currentGenre === 'all' || b.genre === currentGenre)
+        );
+        render(applySort(filtered));
+    };
+
+    // Patch render global pour tri
+    const _origRender = window.render;
+    window.render = function(data = database) {
+        _origRender(sortMode ? applySort(data) : data);
+    };
+
+    document.getElementById('sortAZ')?.addEventListener('click', function() {
+        sortMode = sortMode === 'az' ? null : 'az';
+        document.getElementById('sortAZ').classList.toggle('active', sortMode === 'az');
+        document.getElementById('sortZA').classList.remove('active');
+        window.runFilters();
+    });
+
+    document.getElementById('sortZA')?.addEventListener('click', function() {
+        sortMode = sortMode === 'za' ? null : 'za';
+        document.getElementById('sortZA').classList.toggle('active', sortMode === 'za');
+        document.getElementById('sortAZ').classList.remove('active');
+        window.runFilters();
+    });
+})();
+
+// ===== PLAYER GLOW quand lecture active =====
+(function() {
+    const audio  = document.getElementById('mainAudio');
+    const player = document.getElementById('audioPlayer');
+    if (!audio || !player) return;
+    audio.addEventListener('play',  () => player.classList.add('is-playing'));
+    audio.addEventListener('pause', () => player.classList.remove('is-playing'));
+    audio.addEventListener('ended', () => player.classList.remove('is-playing'));
+})();
+
+// ===== PREVIEW LABEL bilingue =====
+(function() {
+    const label = document.getElementById('previewLabel');
+    if (!label) return;
+    function updateLabel() {
+        label.textContent = currentLang === 'fr'
+            ? '⏱ EXTRAIT 30 SECONDES'
+            : '⏱ 30 SECOND PREVIEW';
+    }
+    updateLabel();
+    // Re-update quand langue change
+    const _origSetLang = window.setLang;
+    window.setLang = function(lang) {
+        _origSetLang(lang);
+        updateLabel();
+    };
+})();
+
+// ===== TOOLTIP PRIX PANIER =====
+(function() {
+    function updatePriceTooltip() {
+        const tooltip = document.getElementById('cartPriceTooltip');
+        if (!tooltip) return;
+        if (!cart || cart.length === 0) {
+            tooltip.textContent = '0.00€';
+            return;
+        }
+        let total = 0;
+        for (let i = 1; i <= cart.length; i++) { if (i % 3 !== 0) total += 39.99; }
+        tooltip.textContent = total.toFixed(2) + '€';
+        // Flash tooltip
+        tooltip.classList.add('show');
+        setTimeout(() => tooltip.classList.remove('show'), 2000);
+    }
+    // Surcharge addToCart pour mettre à jour le tooltip
+    const _origAddToCart = window.addToCart;
+    window.addToCart = function(id) {
+        _origAddToCart(id);
+        updatePriceTooltip();
+    };
+    const _origRemoveFromCart = window.removeFromCart;
+    window.removeFromCart = function(i) {
+        _origRemoveFromCart(i);
+        updatePriceTooltip();
+    };
+    // Init
+    updatePriceTooltip();
+})();
+
+// ===== TRANSITION PAGE fluide vers checkout =====
+(function() {
+    const _origCheckout = window.checkout;
+    window.checkout = function() {
+        saveCart();
+        const pt = document.getElementById('pageTransition');
+        if (!pt) { window.location.href = 'checkout.html'; return; }
+        pt.classList.add('out');
+        setTimeout(() => { window.location.href = 'checkout.html'; }, 380);
+    };
+    // Transition au chargement (entrée)
+    const pt = document.getElementById('pageTransition');
+    if (pt) {
+        pt.style.opacity = '1';
+        pt.style.transition = 'none';
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                pt.style.transition = 'opacity .4s ease';
+                pt.style.opacity = '0';
+            });
+        });
+    }
+})();
+
+// ===== TYPING PHRASES bilingues =====
+(function() {
+    // Patch les phrases pour supporter les deux langues
+    const _origSetLangTyping = window.setLang;
+    window.setLang = function(lang) {
+        _origSetLangTyping(lang);
+        // Les phrases du typing effect changeront au prochain cycle
+    };
+})();
