@@ -86,34 +86,46 @@ const readmeContent = {
 
 // ==================== CURSOR ====================
 (function() {
-    var dot, ring, mx=0, my=0, rx=0, ry=0;
+    var dot, ring, mx=0, my=0, rx=0, ry=0, rafId=null;
     function init() {
         dot  = document.getElementById('cursorDot');
         ring = document.getElementById('cursorRing');
         if (!dot || !ring) return;
+
+        // DOT : positionné instantanément — zéro latence
         document.addEventListener('mousemove', function(e) {
             mx = e.clientX; my = e.clientY;
-            dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-            dot.style.opacity = '1'; ring.style.opacity = '1';
-        });
+            dot.style.left    = mx + 'px';
+            dot.style.top     = my + 'px';
+            dot.style.opacity = '1';
+            ring.style.opacity = '1';
+        }, { passive: true });
+
+        // RING : lerp 0.22 = réactif sans être collé
+        if (rafId) cancelAnimationFrame(rafId);
         (function loop() {
-            rx += (mx-rx)*0.1; ry += (my-ry)*0.1;
-            ring.style.left = rx+'px'; ring.style.top = ry+'px';
-            requestAnimationFrame(loop);
+            rx += (mx - rx) * 0.22;
+            ry += (my - ry) * 0.22;
+            ring.style.left = rx + 'px';
+            ring.style.top  = ry + 'px';
+            rafId = requestAnimationFrame(loop);
         })();
-        document.addEventListener('mousedown', function() { dot.classList.add('clicking'); ring.classList.add('clicking'); });
+
+        document.addEventListener('mousedown', function() { dot.classList.add('clicking');    ring.classList.add('clicking'); });
         document.addEventListener('mouseup',   function() { dot.classList.remove('clicking'); ring.classList.remove('clicking'); });
+
         function addHover(el) {
             el.addEventListener('mouseenter', function() { dot.classList.add('hovering');    ring.classList.add('hovering'); });
             el.addEventListener('mouseleave', function() { dot.classList.remove('hovering'); ring.classList.remove('hovering'); });
         }
         document.querySelectorAll('button,a,input,.lang-btn,.beat-card,.custom-select-item').forEach(addHover);
+
         // Observer pour cartes dynamiques
         new MutationObserver(function() {
             document.querySelectorAll('.beat-card:not([data-c])').forEach(function(card) {
                 card.setAttribute('data-c','1'); addHover(card);
             });
-        }).observe(document.getElementById('beatsGrid') || document.body, {childList:true,subtree:true});
+        }).observe(document.getElementById('beatsGrid') || document.body, {childList:true, subtree:true});
     }
     document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
 })();
@@ -125,7 +137,7 @@ function showToast(msg, type = 'success') {
 
     const toast = document.createElement('div');
     toast.className = 'kaiju-toast';
-    const color = type === 'warn' ? '#F59E0B' : type === 'error' ? '#EF4444' : '#C1121F';
+    const color = type === 'warn' ? '#F59E0B' : type === 'error' ? '#EF4444' : '#FF4500';
     toast.style.cssText = `
         position:fixed; bottom:90px; right:24px; z-index:99998;
         background:#0f0f0f; border:1px solid ${color}40;
@@ -159,21 +171,38 @@ window.setLang = (lang) => {
 
 function applyTranslations(lang) {
     const t = translations[lang];
-    document.getElementById('searchInput').placeholder = t.search;
+
+    // Search placeholder
+    const searchEl = document.getElementById('searchInput');
+    if (searchEl) searchEl.placeholder = t.search;
+
+    // Navbar et modals
     document.getElementById('cartTitle')  && (document.getElementById('cartTitle').textContent  = t.cartTitle);
     document.getElementById('cartSub')    && (document.getElementById('cartSub').textContent    = t.cartSub);
     document.getElementById('socialsSub') && (document.getElementById('socialsSub').textContent = t.socialsSub);
-    document.querySelector('.promo-bar span') && (document.querySelector('.promo-bar span').textContent = t.promoBar);
+    document.getElementById('contactSub') && (document.getElementById('contactSub').textContent = t.contactSub);
     document.getElementById('shuffleBtnLabel') && (document.getElementById('shuffleBtnLabel').textContent = t.shuffleLabel);
     document.getElementById('testimonialsSubtitle') && (document.getElementById('testimonialsSubtitle').textContent = t.testimonialsSubtitle);
-    // Mettre à jour le label du filtre genre si "all" est sélectionné
+
+    // Promo bar
+    const promoSpan = document.querySelector('.promo-bar span');
+    if (promoSpan) promoSpan.textContent = t.promoBar;
+    const promoText = document.getElementById('promoText');
+    if (promoText) promoText.textContent = t.promoBar;
+
+    // Filtre "tous les styles" label
     if (currentGenre === 'all') {
         const lbl = document.getElementById('customSelectLabel');
         if (lbl) lbl.textContent = t.allStyles;
         const allItem = document.querySelector('.custom-select-item[data-value="all"]');
         if (allItem) allItem.textContent = t.allStyles;
     }
+
+    // Re-render les cards pour mettre à jour le bouton "Ajouter au panier"
     render();
+
+    // Re-render le panier si ouvert
+    updateCart();
 }
 
 // ==================== AUDIO ====================
@@ -221,7 +250,7 @@ function animateNowPlaying(id) {
     if (!document.getElementById('now-playing-style')) {
         const s = document.createElement('style');
         s.id = 'now-playing-style';
-        s.textContent = `.now-playing{border-color:rgba(193,18,31,0.5)!important;box-shadow:0 0 0 1px rgba(193,18,31,0.2),var(--shadow-hover)!important}
+        s.textContent = `.now-playing{border-color:rgba(255,69,0,0.5)!important;box-shadow:0 0 0 1px rgba(255,69,0,0.2),var(--shadow-hover)!important}
         .now-playing::before{transform:scaleX(1)!important}`;
         document.head.appendChild(s);
     }
@@ -243,7 +272,7 @@ pBtn.onclick = toggleAudio;
 window.changeTime = (amount) => { mainAudio.currentTime = Math.max(0, mainAudio.currentTime + amount); };
 
 function updateSliderGradient(el, pct) {
-    el.style.background = `linear-gradient(to right, var(--violet) 0%, var(--violet) ${pct}%, rgba(123,44,191,0.15) ${pct}%, rgba(123,44,191,0.15) 100%)`;
+    el.style.background = `linear-gradient(to right, var(--accent) 0%, var(--accent) ${pct}%, rgba(255,69,0,0.12) ${pct}%, rgba(255,69,0,0.12) 100%)`;
 }
 
 progressBar.oninput = (e) => {
@@ -715,7 +744,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===== PARTICULES AU CLIC SUR "AJOUTER AU PANIER" =====
 (function() {
     function burst(x, y) {
-        var colors = ['#C1121F','#E5383B','#7B2CBF','#9D4EDD','#fff'];
+        var colors = ['#FF4500','#FF6B35','#CC3D00','#FF8C55','#fff'];
         for (var i = 0; i < 8; i++) {
             var p = document.createElement('div');
             var angle = (i / 8) * Math.PI * 2;
@@ -799,12 +828,14 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===== TYPING EFFECT sur le placeholder search =====
 (function() {
     var input = null;
-    var phrases = ['Rechercher un beat...', 'CARNAGE, MIRAGE...', 'Trap, Drill, Afro...', 'Ton prochain son...'];
+    var phrasesFr = ['Rechercher un beat...', 'CARNAGE, MIRAGE...', 'Trap, Drill, Afro...', 'Ton prochain son...'];
+    var phrasesEn = ['Search a beat...', 'CARNAGE, MIRAGE...', 'Trap, Drill, Afro...', 'Your next song...'];
     var phraseIdx = 0, charIdx = 0, deleting = false, timeout = null;
     function type() {
         if (!input) { input = document.getElementById('searchInput'); if (!input) return; }
         if (document.activeElement === input) { timeout = setTimeout(type, 200); return; }
-        var phrase = phrases[phraseIdx];
+        var phrases = (typeof currentLang !== 'undefined' && currentLang === 'en') ? phrasesEn : phrasesFr;
+        var phrase = phrases[phraseIdx % phrases.length];
         if (!deleting) {
             charIdx++;
             input.placeholder = phrase.substring(0, charIdx);
@@ -823,173 +854,4 @@ document.addEventListener('DOMContentLoaded', () => {
     document.readyState === 'loading'
         ? document.addEventListener('DOMContentLoaded', function(){ setTimeout(type, 2000); })
         : setTimeout(type, 2000);
-})();
-/* ============================================================
-   KAIJU BEATS — v4.0 NOUVELLES FONCTIONNALITÉS
-   Ajouts purs — zéro logique existante touchée
-   ============================================================ */
-
-// ===== IDS DES 5 DERNIERS BEATS = badges NEW =====
-const NEW_BEAT_IDS = [27, 28, 29, 30, 31];
-
-// ===== PATCH render() — injecte badge NEW + class new-beat =====
-(function() {
-    const _origRender = window.render || null;
-    // On surcharge render via MutationObserver sur le grid
-    function injectNewBadges() {
-        document.querySelectorAll('.beat-card:not([data-new-checked])').forEach(card => {
-            card.setAttribute('data-new-checked', '1');
-            const id = parseInt(card.getAttribute('data-id'));
-            if (NEW_BEAT_IDS.includes(id)) {
-                // Badge NEW
-                if (!card.querySelector('.new-badge')) {
-                    const badge = document.createElement('div');
-                    badge.className = 'new-badge';
-                    badge.textContent = 'NEW';
-                    card.appendChild(badge);
-                }
-            }
-        });
-    }
-    new MutationObserver(injectNewBadges)
-        .observe(document.getElementById('beatsGrid') || document.body, { childList: true, subtree: true });
-    injectNewBadges();
-})();
-
-// ===== TRI A→Z / Z→A =====
-(function() {
-    let sortMode = null; // null | 'az' | 'za'
-
-    function applySort(data) {
-        if (!sortMode) return data;
-        return [...data].sort((a, b) =>
-            sortMode === 'az'
-                ? a.title.localeCompare(b.title)
-                : b.title.localeCompare(a.title)
-        );
-    }
-
-    // Patch runFilters pour intégrer le tri
-    const _origRunFilters = window.runFilters;
-    window.runFilters = function() {
-        const s = document.getElementById('searchInput').value.toLowerCase().trim();
-        const filtered = database.filter(b =>
-            b.title.toLowerCase().includes(s) &&
-            (currentGenre === 'all' || b.genre === currentGenre)
-        );
-        render(applySort(filtered));
-    };
-
-    // Patch render global pour tri
-    const _origRender = window.render;
-    window.render = function(data = database) {
-        _origRender(sortMode ? applySort(data) : data);
-    };
-
-    document.getElementById('sortAZ')?.addEventListener('click', function() {
-        sortMode = sortMode === 'az' ? null : 'az';
-        document.getElementById('sortAZ').classList.toggle('active', sortMode === 'az');
-        document.getElementById('sortZA').classList.remove('active');
-        window.runFilters();
-    });
-
-    document.getElementById('sortZA')?.addEventListener('click', function() {
-        sortMode = sortMode === 'za' ? null : 'za';
-        document.getElementById('sortZA').classList.toggle('active', sortMode === 'za');
-        document.getElementById('sortAZ').classList.remove('active');
-        window.runFilters();
-    });
-})();
-
-// ===== PLAYER GLOW quand lecture active =====
-(function() {
-    const audio  = document.getElementById('mainAudio');
-    const player = document.getElementById('audioPlayer');
-    if (!audio || !player) return;
-    audio.addEventListener('play',  () => player.classList.add('is-playing'));
-    audio.addEventListener('pause', () => player.classList.remove('is-playing'));
-    audio.addEventListener('ended', () => player.classList.remove('is-playing'));
-})();
-
-// ===== PREVIEW LABEL bilingue =====
-(function() {
-    const label = document.getElementById('previewLabel');
-    if (!label) return;
-    function updateLabel() {
-        label.textContent = currentLang === 'fr'
-            ? '⏱ EXTRAIT 30 SECONDES'
-            : '⏱ 30 SECOND PREVIEW';
-    }
-    updateLabel();
-    // Re-update quand langue change
-    const _origSetLang = window.setLang;
-    window.setLang = function(lang) {
-        _origSetLang(lang);
-        updateLabel();
-    };
-})();
-
-// ===== TOOLTIP PRIX PANIER =====
-(function() {
-    function updatePriceTooltip() {
-        const tooltip = document.getElementById('cartPriceTooltip');
-        if (!tooltip) return;
-        if (!cart || cart.length === 0) {
-            tooltip.textContent = '0.00€';
-            return;
-        }
-        let total = 0;
-        for (let i = 1; i <= cart.length; i++) { if (i % 3 !== 0) total += 39.99; }
-        tooltip.textContent = total.toFixed(2) + '€';
-        // Flash tooltip
-        tooltip.classList.add('show');
-        setTimeout(() => tooltip.classList.remove('show'), 2000);
-    }
-    // Surcharge addToCart pour mettre à jour le tooltip
-    const _origAddToCart = window.addToCart;
-    window.addToCart = function(id) {
-        _origAddToCart(id);
-        updatePriceTooltip();
-    };
-    const _origRemoveFromCart = window.removeFromCart;
-    window.removeFromCart = function(i) {
-        _origRemoveFromCart(i);
-        updatePriceTooltip();
-    };
-    // Init
-    updatePriceTooltip();
-})();
-
-// ===== TRANSITION PAGE fluide vers checkout =====
-(function() {
-    const _origCheckout = window.checkout;
-    window.checkout = function() {
-        saveCart();
-        const pt = document.getElementById('pageTransition');
-        if (!pt) { window.location.href = 'checkout.html'; return; }
-        pt.classList.add('out');
-        setTimeout(() => { window.location.href = 'checkout.html'; }, 380);
-    };
-    // Transition au chargement (entrée)
-    const pt = document.getElementById('pageTransition');
-    if (pt) {
-        pt.style.opacity = '1';
-        pt.style.transition = 'none';
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                pt.style.transition = 'opacity .4s ease';
-                pt.style.opacity = '0';
-            });
-        });
-    }
-})();
-
-// ===== TYPING PHRASES bilingues =====
-(function() {
-    // Patch les phrases pour supporter les deux langues
-    const _origSetLangTyping = window.setLang;
-    window.setLang = function(lang) {
-        _origSetLangTyping(lang);
-        // Les phrases du typing effect changeront au prochain cycle
-    };
 })();
