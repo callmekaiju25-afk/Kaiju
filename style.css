@@ -32,31 +32,29 @@ html { scroll-behavior:smooth; }
 /* ===== CURSEUR ===== */
 .cursor-dot {
   position:fixed; width:8px; height:8px;
-  background:var(--primary-hi); border-radius:50%;
+  background:#FF6B35; border-radius:50%;
   pointer-events:none; z-index:999999;
-  transform:translate(-50%,-50%);
-  box-shadow:0 0 20px rgba(255,140,85,1), 0 0 40px rgba(255,107,53,0.45);
-  /* AUCUNE transition sur left/top — géré instantanément par JS */
-  transition:width .15s, height .15s, background .15s, opacity .3s;
-  will-change:left, top;
-  opacity:0;
-  left:-100px; top:-100px;
+  top:0; left:0;
+  transform:translate(-9999px, -9999px);
+  box-shadow:0 0 16px rgba(255,107,53,0.9), 0 0 32px rgba(255,69,0,0.45);
+  transition:width .15s ease, height .15s ease, background .15s ease, box-shadow .15s ease;
+  will-change:transform;
+  opacity:1;
 }
 .cursor-ring {
   position:fixed; width:34px; height:34px;
-  border:1.5px solid rgba(255,107,53,0.4); border-radius:50%;
+  border:1.5px solid rgba(255,107,53,0.5); border-radius:50%;
   pointer-events:none; z-index:999998;
-  transform:translate(-50%,-50%);
-  /* Transition UNIQUEMENT sur les props visuelles — pas left/top */
-  transition:width .2s var(--ease-bounce), height .2s var(--ease-bounce), border-color .15s, background .15s, opacity .3s;
-  will-change:left, top;
-  opacity:0;
-  left:-100px; top:-100px;
+  top:0; left:0;
+  transform:translate(-9999px, -9999px);
+  transition:width .2s ease, height .2s ease, border-color .15s ease;
+  will-change:transform;
+  opacity:1;
 }
-.cursor-dot.hovering { width:5px; height:5px; background:#fff; box-shadow:0 0 12px #fff; }
-.cursor-ring.hovering { width:44px; height:44px; border-color:rgba(123,44,191,.7); background:rgba(123,44,191,.05); }
-.cursor-dot.clicking { transform:translate(-50%,-50%) scale(0.6); }
-.cursor-ring.clicking { transform:translate(-50%,-50%) scale(1.2); border-color:var(--accent); }
+.cursor-dot.hovering { width:5px; height:5px; background:#fff; box-shadow:0 0 10px rgba(255,255,255,0.9); }
+.cursor-ring.hovering { width:44px; height:44px; border-color:rgba(255,69,0,0.7); background:rgba(255,69,0,0.04); }
+.cursor-dot.clicking { transform:var(--cursor-dot-pos,translate(-9999px,-9999px)) scale(0.6); }
+.cursor-ring.clicking { border-color:#FF4500; }
 
 /* ===== BODY ===== */
 body { background:var(--bg); color:var(--text); font-family:var(--font-b); overflow-x:hidden; min-height:100vh; }
@@ -191,7 +189,7 @@ main.container{z-index:10 !important}.hero-stats{z-index:10 !important}
   transition:transform .3s var(--ease-bounce), box-shadow .3s;
   box-shadow:0 4px 20px rgba(255,69,0,0.35);
 }
-.cart-trigger:hover { transform:scale(1.12) rotate(8deg); box-shadow:0 6px 30px rgba(255,69,0,0.6); }
+.cart-trigger:hover { transform:scale(1.12) rotate(8deg); box-shadow:0 6px 30px rgba(123,44,191,0.65); }
 .cart-trigger:active { transform:scale(0.95); }
 .cart-badge {
   position:absolute; top:-5px; right:-5px;
@@ -210,7 +208,7 @@ main.container{z-index:10 !important}.hero-stats{z-index:10 !important}
 .promo-container { margin-top:68px; position:relative; z-index:10; }
 .promo-bar {
   display:flex; align-items:center; justify-content:center; gap:14px; padding:10px;
-  background:linear-gradient(90deg,transparent,rgba(255,69,0,0.05) 30%,rgba(255,69,0,0.07) 50%,rgba(255,69,0,0.05) 70%,transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,69,0,0.05) 30%,rgba(123,44,191,0.09) 50%,rgba(255,69,0,0.05) 70%,transparent);
   border-top:1px solid var(--border); border-bottom:1px solid var(--border);
   font-family:var(--font-d); font-size:0.65rem; font-weight:700; letter-spacing:4px;
   color:var(--accent-hi); position:relative; overflow:hidden;
@@ -1088,7 +1086,7 @@ main.container { padding-top:44px; position:relative; z-index:10; }
 .bg-glow::after {
   background:radial-gradient(
     ellipse,
-    rgba(255,107,53,0.08) 0%,
+    rgba(193,18,31,0.10) 0%,
     transparent 65%
   ) !important;
 }
@@ -1142,3 +1140,4 @@ main.container { padding-top:44px; position:relative; z-index:10; }
 /* Fix liens cliquables — pointer-events auto sur tous les <a> */
 a, a * { pointer-events: auto !important; }
 .back-btn, .back-btn *, .go-back, .go-back * { pointer-events: auto !important; cursor: none !important; }
+a, button { pointer-events: auto !important; }

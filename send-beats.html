@@ -6,11 +6,11 @@
     <title>KAIJU BEATS | Send Beats</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=37.0">
+    <link rel="stylesheet" href="style.css?v=42.0">
     <style>
         .send-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
         .send-card{background:var(--bg-card);border:1px solid var(--border);border-radius:24px;padding:50px 40px;max-width:560px;width:100%;text-align:center}
-        .send-card h1{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;letter-spacing:3px;color:var(--accent-hi);margin-bottom:8px}
+        .send-card h1{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;letter-spacing:3px;color:var(--violet-hi);margin-bottom:8px}
         .send-card>p{font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--text-soft);line-height:1.8;margin-bottom:24px}
         .order-info{background:rgba(255,69,0,0.06);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:28px;text-align:left}
         .info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-family:'Space Mono',monospace;font-size:0.72rem}
@@ -19,14 +19,14 @@
         .info-row span:last-child{color:var(--text);font-weight:bold}
         .beats-list{text-align:left;margin-bottom:28px}
         .beat-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-family:'Space Mono',monospace;font-size:0.72rem;color:var(--text-mid)}
-        .beat-row i{color:var(--accent-hi)}
-        .beat-row a{color:var(--accent-hi);text-decoration:none;transition:opacity 0.2s}
+        .beat-row i{color:var(--violet-hi)}
+        .beat-row a{color:var(--violet-hi);text-decoration:none;transition:opacity 0.2s}
         .beat-row a:hover{opacity:0.75}
-        .send-btn{width:100%;padding:18px;background:linear-gradient(135deg,var(--primary),var(--accent));border:none;border-radius:14px;color:#fff;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.9rem;letter-spacing:3px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:12px}
+        .send-btn{width:100%;padding:18px;background:linear-gradient(135deg,var(--red),var(--violet));border:none;border-radius:14px;color:#fff;font-family:'Orbitron',sans-serif;font-weight:900;font-size:0.9rem;letter-spacing:3px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:12px}
         .send-btn:hover{box-shadow:0 0 32px rgba(255,69,0,0.5);transform:translateY(-2px)}
         .send-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
         .status-msg{font-family:'Space Mono',monospace;font-size:0.78rem;margin-top:16px;padding:14px;border-radius:10px;display:none}
-        .status-msg.success{background:rgba(255,69,0,0.1);border:1px solid var(--border-hi);color:var(--accent-hi)}
+        .status-msg.success{background:rgba(255,69,0,0.1);border:1px solid var(--border-hi);color:var(--violet-hi)}
         .status-msg.error{background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.2);color:#ff4444}
         .invalid-page{text-align:center;padding:80px 20px}
         .invalid-page i{font-size:3.5rem;color:#333;display:block;margin-bottom:20px}
@@ -35,11 +35,11 @@
         /* Password gate */
         .pw-gate{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:20px}
         .pw-card{background:var(--bg-card);border:1px solid var(--border-hi);border-radius:20px;padding:44px 40px;max-width:380px;width:100%;text-align:center}
-        .pw-card h2{font-family:'Orbitron',sans-serif;font-size:0.9rem;font-weight:900;letter-spacing:3px;color:var(--accent-hi);margin-bottom:8px}
+        .pw-card h2{font-family:'Orbitron',sans-serif;font-size:0.9rem;font-weight:900;letter-spacing:3px;color:var(--violet-hi);margin-bottom:8px}
         .pw-card p{font-family:'Space Mono',monospace;font-size:0.68rem;color:var(--text-soft);margin-bottom:24px;line-height:1.6}
         .pw-input{width:100%;background:rgba(255,69,0,0.05);border:1px solid var(--border-hi);border-radius:10px;padding:14px 18px;color:var(--text);font-family:'Space Mono',monospace;font-size:0.9rem;outline:none;box-sizing:border-box;text-align:center;letter-spacing:4px;margin-bottom:12px;transition:all 0.3s}
         .pw-input:focus{border-color:rgba(255,69,0,0.5);box-shadow:0 0 15px rgba(255,69,0,0.1)}
-        .pw-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),var(--accent));border:none;border-radius:10px;color:#fff;font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:2px;cursor:pointer;transition:all 0.3s}
+        .pw-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--red),var(--violet));border:none;border-radius:10px;color:#fff;font-family:'Orbitron',sans-serif;font-weight:700;font-size:0.8rem;letter-spacing:2px;cursor:pointer;transition:all 0.3s}
         .pw-btn:hover{box-shadow:0 0 24px rgba(255,69,0,0.4);transform:translateY(-1px)}
         .pw-error{font-size:0.65rem;color:#ff4444;font-family:'Space Mono',monospace;margin-top:8px;display:none}
     </style>

@@ -51,6 +51,15 @@ const translations = {
         socialsSub:"Retrouve-moi sur les réseaux",
         toastAdded:"ajouté au panier 🎵", toastDuplicate:"déjà dans le panier",
         shuffleLabel:"SHUFFLE", testimonialsSubtitle:"Ce que disent les artistes",
+        readmeBtn:"LIS MOI", heroCta:"EXPLORER LE CATALOG",
+        offreSpeciale:"OFFRE SPÉCIALE", catalogCount:"BEATS DISPONIBLES",
+        footerRights:"© 2025 KAIJU BEATS — TOUS DROITS RÉSERVÉS",
+        testi1Text:""Des prods de qualité studio, l'ambiance est là dès les premières secondes. CARNAGE m'a fait écrire un freestyle en 10 minutes."",
+        testi1Sub:"Rappeur — Paris",
+        testi2Text:""ZURA c'est exactement le son que je cherchais pour mon projet Afro. Kaiju sait capter l'émotion comme personne."",
+        testi2Sub:"Artiste Afro — Dakar",
+        testi3Text:""Le processus d'achat est simple et rapide. J'ai reçu mes fichiers en moins d'une heure. Je reviendrai !"",
+        testi3Sub:"Chanteuse — Lyon",
     },
     en: {
         search:"Search a beat...", allStyles:"ALL STYLES",
@@ -63,6 +72,15 @@ const translations = {
         socialsSub:"Find me on social media",
         toastAdded:"added to cart 🎵", toastDuplicate:"already in cart",
         shuffleLabel:"SHUFFLE", testimonialsSubtitle:"What artists say",
+        readmeBtn:"READ ME", heroCta:"EXPLORE THE CATALOG",
+        offreSpeciale:"SPECIAL OFFER", catalogCount:"BEATS AVAILABLE",
+        footerRights:"© 2025 KAIJU BEATS — ALL RIGHTS RESERVED",
+        testi1Text:""Studio quality production, the vibe hits from the first second. CARNAGE made me write a freestyle in 10 minutes."",
+        testi1Sub:"Rapper — Paris",
+        testi2Text:""ZURA is exactly the sound I needed for my Afro project. Kaiju captures emotion like no one else."",
+        testi2Sub:"Afro Artist — Dakar",
+        testi3Text:""The buying process is simple and fast. I received my files in under an hour. I'll be back!"",
+        testi3Sub:"Singer — Lyon",
     }
 };
 
@@ -92,22 +110,24 @@ const readmeContent = {
         ring = document.getElementById('cursorRing');
         if (!dot || !ring) return;
 
-        // DOT : positionné instantanément — zéro latence
+        // DOT : via transform translate — méthode GPU, zéro latence
         document.addEventListener('mousemove', function(e) {
             mx = e.clientX; my = e.clientY;
-            dot.style.left    = mx + 'px';
-            dot.style.top     = my + 'px';
-            dot.style.opacity = '1';
+            var hw = dot.offsetWidth  / 2 || 4;
+            var hh = dot.offsetHeight / 2 || 4;
+            dot.style.transform  = 'translate(' + (mx - hw) + 'px,' + (my - hh) + 'px)';
             ring.style.opacity = '1';
+            dot.style.opacity  = '1';
         }, { passive: true });
 
-        // RING : lerp 0.22 = réactif sans être collé
+        // RING : lerp via transform
         if (rafId) cancelAnimationFrame(rafId);
         (function loop() {
             rx += (mx - rx) * 0.22;
             ry += (my - ry) * 0.22;
-            ring.style.left = rx + 'px';
-            ring.style.top  = ry + 'px';
+            var rw = ring.offsetWidth  / 2 || 17;
+            var rh = ring.offsetHeight / 2 || 17;
+            ring.style.transform = 'translate(' + (rx - rw) + 'px,' + (ry - rh) + 'px)';
             rafId = requestAnimationFrame(loop);
         })();
 
@@ -115,6 +135,7 @@ const readmeContent = {
         document.addEventListener('mouseup',   function() { dot.classList.remove('clicking'); ring.classList.remove('clicking'); });
 
         function addHover(el) {
+            el.style.pointerEvents = 'auto';
             el.addEventListener('mouseenter', function() { dot.classList.add('hovering');    ring.classList.add('hovering'); });
             el.addEventListener('mouseleave', function() { dot.classList.remove('hovering'); ring.classList.remove('hovering'); });
         }
@@ -171,37 +192,34 @@ window.setLang = (lang) => {
 
 function applyTranslations(lang) {
     const t = translations[lang];
-
-    // Search placeholder
-    const searchEl = document.getElementById('searchInput');
-    if (searchEl) searchEl.placeholder = t.search;
-
-    // Navbar et modals
-    document.getElementById('cartTitle')  && (document.getElementById('cartTitle').textContent  = t.cartTitle);
-    document.getElementById('cartSub')    && (document.getElementById('cartSub').textContent    = t.cartSub);
-    document.getElementById('socialsSub') && (document.getElementById('socialsSub').textContent = t.socialsSub);
-    document.getElementById('contactSub') && (document.getElementById('contactSub').textContent = t.contactSub);
-    document.getElementById('shuffleBtnLabel') && (document.getElementById('shuffleBtnLabel').textContent = t.shuffleLabel);
-    document.getElementById('testimonialsSubtitle') && (document.getElementById('testimonialsSubtitle').textContent = t.testimonialsSubtitle);
-
-    // Promo bar
-    const promoSpan = document.querySelector('.promo-bar span');
-    if (promoSpan) promoSpan.textContent = t.promoBar;
-    const promoText = document.getElementById('promoText');
-    if (promoText) promoText.textContent = t.promoBar;
-
-    // Filtre "tous les styles" label
+    const si = document.getElementById('searchInput');
+    if (si) si.placeholder = t.search;
+    const rmBtn = document.getElementById('readmeBtnLabel'); if (rmBtn) rmBtn.textContent = t.readmeBtn;
+    const shBtn = document.getElementById('shuffleBtnLabel'); if (shBtn) shBtn.textContent = t.shuffleLabel;
+    const promoEl = document.getElementById('promoText') || document.querySelector('.promo-bar span');
+    if (promoEl) promoEl.textContent = t.promoBar;
+    const heroCtaEl = document.getElementById('heroCtaText'); if (heroCtaEl) heroCtaEl.textContent = t.heroCta;
+    const offreEl = document.getElementById('offreLabel'); if (offreEl) offreEl.textContent = t.offreSpeciale;
+    const countEl = document.getElementById('catalogCount');
+    if (countEl) countEl.textContent = '— ' + database.length + ' ' + t.catalogCount + ' —';
+    const cartTitle = document.getElementById('cartTitle'); if (cartTitle) cartTitle.textContent = t.cartTitle;
+    const cartSub = document.getElementById('cartSub'); if (cartSub) cartSub.textContent = t.cartSub;
+    const socialsSub = document.getElementById('socialsSub'); if (socialsSub) socialsSub.textContent = t.socialsSub;
+    const contactSub = document.getElementById('contactSub'); if (contactSub) contactSub.textContent = t.contactSub;
+    const testiSub = document.getElementById('testimonialsSubtitle'); if (testiSub) testiSub.textContent = t.testimonialsSubtitle;
+    const el1 = document.getElementById('testi1Text'); if (el1) el1.textContent = t.testi1Text;
+    const el1s = document.getElementById('testi1Sub');  if (el1s) el1s.textContent = t.testi1Sub;
+    const el2 = document.getElementById('testi2Text'); if (el2) el2.textContent = t.testi2Text;
+    const el2s = document.getElementById('testi2Sub');  if (el2s) el2s.textContent = t.testi2Sub;
+    const el3 = document.getElementById('testi3Text'); if (el3) el3.textContent = t.testi3Text;
+    const el3s = document.getElementById('testi3Sub');  if (el3s) el3s.textContent = t.testi3Sub;
+    const ftr = document.getElementById('footerRights'); if (ftr) ftr.textContent = t.footerRights;
     if (currentGenre === 'all') {
-        const lbl = document.getElementById('customSelectLabel');
-        if (lbl) lbl.textContent = t.allStyles;
+        const lbl = document.getElementById('customSelectLabel'); if (lbl) lbl.textContent = t.allStyles;
         const allItem = document.querySelector('.custom-select-item[data-value="all"]');
         if (allItem) allItem.textContent = t.allStyles;
     }
-
-    // Re-render les cards pour mettre à jour le bouton "Ajouter au panier"
     render();
-
-    // Re-render le panier si ouvert
     updateCart();
 }
 
@@ -272,7 +290,7 @@ pBtn.onclick = toggleAudio;
 window.changeTime = (amount) => { mainAudio.currentTime = Math.max(0, mainAudio.currentTime + amount); };
 
 function updateSliderGradient(el, pct) {
-    el.style.background = `linear-gradient(to right, var(--accent) 0%, var(--accent) ${pct}%, rgba(255,69,0,0.12) ${pct}%, rgba(255,69,0,0.12) 100%)`;
+    el.style.background = `linear-gradient(to right, var(--violet) 0%, var(--violet) ${pct}%, rgba(123,44,191,0.15) ${pct}%, rgba(123,44,191,0.15) 100%)`;
 }
 
 progressBar.oninput = (e) => {
@@ -593,6 +611,12 @@ window.addEventListener('scroll', () => {
 
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', () => {
+    // Cacher le modal langue si déjà choisi
+    if (localStorage.getItem('kaijuLang')) {
+        var lm = document.getElementById('langModal');
+        if (lm) lm.classList.add('hidden');
+    }
+    applyTranslations(currentLang);
     render();
     updateCart();
     updateSliderGradient(document.getElementById('volControl'), 100);
