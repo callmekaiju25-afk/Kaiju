@@ -42,45 +42,45 @@ const database = [
 const translations = {
     fr: {
         search:"Rechercher un beat...", allStyles:"TOUS LES STYLES",
-        addToCart:"39.99\u20ac \u2014 AJOUTER AU PANIER", cartTitle:"VOTRE PANIER",
-        cartSub:"Beats s\u00e9lectionn\u00e9s", cartEmpty:"Votre panier est vide.",
-        promo:"OFFRE 2+1 APPLIQU\u00c9E \u2705", checkout:"PASSER LA COMMANDE",
+        addToCart:"39.99€ — AJOUTER AU PANIER", cartTitle:"VOTRE PANIER",
+        cartSub:"Beats sélectionnés", cartEmpty:"Votre panier est vide.",
+        promo:"OFFRE 2+1 APPLIQUÉE ✅", checkout:"PASSER LA COMMANDE",
         contactSub:"Contactez-moi pour vos projets",
-        promoBar:"2 BEATS ACHET\u00c9S = LE 3\u00c8ME OFFERT (AUTO-APPLIQU\u00c9)",
-        prodBy:"PROD BY KAIJU", beatsSelected:"Beats s\u00e9lectionn\u00e9s",
-        socialsSub:"Retrouve-moi sur les r\u00e9seaux",
-        toastAdded:"ajout\u00e9 au panier \uD83C\uDFB5", toastDuplicate:"d\u00e9j\u00e0 dans le panier",
+        promoBar:"2 BEATS ACHETÉS = LE 3ÈME OFFERT (AUTO-APPLIQUÉ)",
+        prodBy:"PROD BY KAIJU", beatsSelected:"Beats sélectionnés",
+        socialsSub:"Retrouve-moi sur les réseaux",
+        toastAdded:"ajouté au panier 🎵", toastDuplicate:"déjà dans le panier",
         shuffleLabel:"SHUFFLE", testimonialsSubtitle:"Ce que disent les artistes",
         readmeBtn:"LIS MOI", heroCta:"EXPLORER LE CATALOG",
-        offreSpeciale:"OFFRE SP\u00c9CIALE", catalogCount:"BEATS DISPONIBLES",
-        footerRights:"\u00a9 2025 KAIJU BEATS \u2014 TOUS DROITS R\u00c9SERV\u00c9S",
-        testi1Text:"Des prods de qualit\u00e9 studio, l'ambiance est l\u00e0 d\u00e8s les premi\u00e8res secondes. CARNAGE m'a fait \u00e9crire un freestyle en 10 minutes.",
-        testi1Sub:"Rappeur \u2014 Paris",
-        testi2Text:"ZURA c'est exactement le son que je cherchais pour mon projet Afro. Kaiju sait capter l'\u00e9motion comme personne.",
-        testi2Sub:"Artiste Afro \u2014 Dakar",
-        testi3Text:"Le processus d'achat est simple et rapide. J'ai re\u00e7u mes fichiers en moins d'une heure. Je reviendrai !",
-        testi3Sub:"Chanteuse \u2014 Lyon"
+        offreSpeciale:"OFFRE SPÉCIALE", catalogCount:"BEATS DISPONIBLES",
+        footerRights:"© 2025 KAIJU BEATS — TOUS DROITS RÉSERVÉS",
+        testi1Text:"Des prods de qualité studio, l'ambiance est là dès les premières secondes. CARNAGE m'a fait écrire un freestyle en 10 minutes.",
+        testi1Sub:"Rappeur — Paris",
+        testi2Text:"ZURA c'est exactement le son que je cherchais pour mon projet Afro. Kaiju sait capter l'émotion comme personne.",
+        testi2Sub:"Artiste Afro — Dakar",
+        testi3Text:"Le processus d'achat est simple et rapide. J'ai reçu mes fichiers en moins d'une heure. Je reviendrai !",
+        testi3Sub:"Chanteuse — Lyon"
     },
     en: {
         search:"Search a beat...", allStyles:"ALL STYLES",
-        addToCart:"39.99\u20ac \u2014 ADD TO CART", cartTitle:"YOUR CART",
+        addToCart:"39.99€ — ADD TO CART", cartTitle:"YOUR CART",
         cartSub:"Selected beats", cartEmpty:"Your cart is empty.",
-        promo:"2+1 DEAL APPLIED \u2705", checkout:"PLACE ORDER",
+        promo:"2+1 DEAL APPLIED ✅", checkout:"PLACE ORDER",
         contactSub:"Contact me for your projects",
         promoBar:"BUY 2 BEATS = GET THE 3RD FREE (AUTO-APPLIED)",
         prodBy:"PROD BY KAIJU", beatsSelected:"Selected beats",
         socialsSub:"Find me on social media",
-        toastAdded:"added to cart \uD83C\uDFB5", toastDuplicate:"already in cart",
+        toastAdded:"added to cart 🎵", toastDuplicate:"already in cart",
         shuffleLabel:"SHUFFLE", testimonialsSubtitle:"What artists say",
         readmeBtn:"READ ME", heroCta:"EXPLORE THE CATALOG",
         offreSpeciale:"SPECIAL OFFER", catalogCount:"BEATS AVAILABLE",
-        footerRights:"\u00a9 2025 KAIJU BEATS \u2014 ALL RIGHTS RESERVED",
+        footerRights:"© 2025 KAIJU BEATS — ALL RIGHTS RESERVED",
         testi1Text:"Studio quality production, the vibe hits from the first second. CARNAGE made me write a freestyle in 10 minutes.",
-        testi1Sub:"Rapper \u2014 Paris",
+        testi1Sub:"Rapper — Paris",
         testi2Text:"ZURA is exactly the sound I needed for my Afro project. Kaiju captures emotion like no one else.",
-        testi2Sub:"Afro Artist \u2014 Dakar",
+        testi2Sub:"Afro Artist — Dakar",
         testi3Text:"The buying process is simple and fast. I received my files in under an hour. I'll be back!",
-        testi3Sub:"Singer \u2014 Lyon"
+        testi3Sub:"Singer — Lyon"
     }
 };
 
@@ -611,12 +611,7 @@ window.addEventListener('scroll', () => {
 
 // ==================== INIT ====================
 document.addEventListener('DOMContentLoaded', () => {
-    // Cacher le modal langue si déjà choisi
-    if (localStorage.getItem('kaijuLang')) {
-        var lm = document.getElementById('langModal');
-        if (lm) lm.classList.add('hidden');
-    }
-    applyTranslations(currentLang);
+
     render();
     updateCart();
     updateSliderGradient(document.getElementById('volControl'), 100);
