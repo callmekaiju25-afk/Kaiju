@@ -268,47 +268,35 @@
         }
     }
 
-    // Curseur custom
-    window.addEventListener('load', function() {
-        const d = document.getElementById('cursorDot');
-        const r = document.getElementById('cursorRing');
-        if (!d || !r) return;
-        let mx=0, my=0, rx=0, ry=0;
-        document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; d.style.left=mx+'px'; d.style.top=my+'px'; });
-        (function loop(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; r.style.left=rx+'px'; r.style.top=ry+'px'; requestAnimationFrame(loop); })();
-        document.querySelectorAll('button,a,input').forEach(el => {
-            el.addEventListener('mouseenter', () => { d.classList.add('hovering'); r.classList.add('hovering'); });
-            el.addEventListener('mouseleave', () => { d.classList.remove('hovering'); r.classList.remove('hovering'); });
-        });
-    });
-    
-    // ===== CURSEUR =====
+    // ===== CURSEUR SEND-BEATS =====
     (function() {
-        var dot  = document.getElementById('cursorDot');
-        var ring = document.getElementById('cursorRing');
-        if (!dot || !ring) return;
-        var mx=0, my=0, rx=0, ry=0;
-        document.addEventListener('mousemove', function(e) {
-            mx = e.clientX; my = e.clientY;
-            dot.style.left = mx + 'px';
-            dot.style.top  = my + 'px';
-            dot.style.opacity  = '1';
-            ring.style.opacity = '1';
-        });
-        (function loop() {
-            rx += (mx - rx) * 0.1;
-            ry += (my - ry) * 0.1;
-            ring.style.left = rx + 'px';
-            ring.style.top  = ry + 'px';
-            requestAnimationFrame(loop);
-        })();
-        document.addEventListener('mousedown', function() { dot.classList.add('clicking'); ring.classList.add('clicking'); });
-        document.addEventListener('mouseup',   function() { dot.classList.remove('clicking'); ring.classList.remove('clicking'); });
-        function addHover(el) {
-            el.addEventListener('mouseenter', function() { dot.classList.add('hovering');    ring.classList.add('hovering'); });
-            el.addEventListener('mouseleave', function() { dot.classList.remove('hovering'); ring.classList.remove('hovering'); });
+        function init() {
+            var dot  = document.getElementById('cursorDot');
+            var ring = document.getElementById('cursorRing');
+            if (!dot || !ring) return;
+            var mx=0, my=0, rx=0, ry=0;
+            document.addEventListener('mousemove', function(e) {
+                mx = e.clientX; my = e.clientY;
+                var hw = dot.offsetWidth/2||4, hh = dot.offsetHeight/2||4;
+                dot.style.transform = 'translate(' + (mx-hw) + 'px,' + (my-hh) + 'px)';
+                dot.style.opacity  = '1';
+                ring.style.opacity = '1';
+            }, { passive: true });
+            (function loop() {
+                rx += (mx-rx)*0.22; ry += (my-ry)*0.22;
+                var rw = ring.offsetWidth/2||17, rh = ring.offsetHeight/2||17;
+                ring.style.transform = 'translate(' + (rx-rw) + 'px,' + (ry-rh) + 'px)';
+                requestAnimationFrame(loop);
+            })();
+            document.addEventListener('mousedown', function() { dot.classList.add('clicking');    ring.classList.add('clicking'); });
+            document.addEventListener('mouseup',   function() { dot.classList.remove('clicking'); ring.classList.remove('clicking'); });
+            document.querySelectorAll('a,button,input').forEach(function(el) {
+                el.style.pointerEvents = 'auto';
+                el.addEventListener('mouseenter', function() { dot.classList.add('hovering');    ring.classList.add('hovering'); });
+                el.addEventListener('mouseleave', function() { dot.classList.remove('hovering'); ring.classList.remove('hovering'); });
+            });
         }
-        document.querySelectorAll('button, a, input').forEach(addHover);
+        document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
     })();
 
     </script>

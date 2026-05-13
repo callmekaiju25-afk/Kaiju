@@ -37,7 +37,7 @@ html { scroll-behavior:smooth; }
   top:0; left:0;
   transform:translate(-9999px, -9999px);
   box-shadow:0 0 16px rgba(255,107,53,0.9), 0 0 32px rgba(255,69,0,0.45);
-  transition:width .15s ease, height .15s ease, background .15s ease, box-shadow .15s ease;
+  transition:width .15s ease, height .15s ease, background .15s ease;
   will-change:transform;
   opacity:1;
 }
@@ -53,7 +53,7 @@ html { scroll-behavior:smooth; }
 }
 .cursor-dot.hovering { width:5px; height:5px; background:#fff; box-shadow:0 0 10px rgba(255,255,255,0.9); }
 .cursor-ring.hovering { width:44px; height:44px; border-color:rgba(255,69,0,0.7); background:rgba(255,69,0,0.04); }
-.cursor-dot.clicking { transform:var(--cursor-dot-pos,translate(-9999px,-9999px)) scale(0.6); }
+.cursor-dot.clicking { opacity:0.6; }
 .cursor-ring.clicking { border-color:#FF4500; }
 
 /* ===== BODY ===== */
@@ -1132,12 +1132,6 @@ main.container { padding-top:44px; position:relative; z-index:10; }
   border-radius:0 10px 10px 0 !important;
 }
 
-/* ===== FIX CURSEUR + LIENS v4.1 ===== */
-/* Force — aucune transition CSS sur les coordonnées du curseur */
-.cursor-dot  { transition-property: width, height, background, box-shadow, opacity !important; }
-.cursor-ring { transition-property: width, height, border-color, background, opacity !important; }
-
-/* Fix liens cliquables — pointer-events auto sur tous les <a> */
-a, a * { pointer-events: auto !important; }
-.back-btn, .back-btn *, .go-back, .go-back * { pointer-events: auto !important; cursor: none !important; }
+/* Fix liens cliquables */
 a, button { pointer-events: auto !important; }
+.back-btn, .back-btn * { pointer-events: auto !important; }
